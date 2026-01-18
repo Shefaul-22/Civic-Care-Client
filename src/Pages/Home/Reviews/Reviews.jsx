@@ -31,8 +31,14 @@ const Reviews = () => {
         <div className='pt-8'>
 
             <div className='text-center my-7 space-y-4'>
-                <h2 className='font-bold text-xl md:text-3xl'>What our customers are sayings </h2>
-                <p className='px-6 md:px-16 lg:px-32 text-optional '>Enhance posture, mobility, and well-being effortlessly with Posture Pro. Achieve proper alignment, reduce pain, and strengthen your body with ease!</p>
+                <h2 className='font-bold text-xl md:text-3xl lg:text-4xl'>
+                    What our citizens are saying
+                </h2>
+                <p className='px-6 md:px-16 lg:px-32 text-gray-600'>
+                    Real feedback from citizens using CivicCare to report and track public issues.
+                    Hear how our platform has helped improve transparency, speed up responses, and make city services more efficient.
+                </p>
+
             </div>
 
             {reviews.length > 0 && (
