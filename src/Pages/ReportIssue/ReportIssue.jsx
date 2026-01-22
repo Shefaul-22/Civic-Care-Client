@@ -43,7 +43,7 @@ const ReportIssue = () => {
 
                 {/* report details, name, photo */}
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-12 my-8'>
-                
+
                     <fieldset className="fieldset">
                         <label className="label">Issue Name</label>
                         <input type="text" {...register('issueName', { required: true })} className="input w-full" placeholder="Issue Name" />
@@ -52,20 +52,53 @@ const ReportIssue = () => {
                             <p className='text-red-500'>Issue Name is required</p>
                         )}
 
-                        {/* <label className="label">Upload Issue Photo</label>
+                        {/* select a category */}
+                        <fieldset className="fieldset">
+                            <legend className="fieldset-legend">Issue Category</legend>
+
+                            <select {...register('category', { required: "Category is required" })}
+
+                                defaultValue="" className="select w-full">
+
+                                <option value="" disabled>Pick a Category</option>
+                                <option value="Broken streetlights">Broken streetlights</option>
+                                <option value="Potholes">Potholes</option>
+                                <option value="Water leakage">Water leakage</option>
+                                <option value="Garbage overflow">Garbage overflow</option>
+                                <option value="Damage footpaths">Damage footpaths</option>
+                                
+                            </select>
+
+                            {errors.category && (
+                                <p className="text-red-500">{errors.category.message}</p>
+                            )}
+
+
+                        </fieldset>
+                        {/* Issue description */}
+                        <fieldset className='fieldset'>
+                            <legend className="fieldset-legend">Issue Details</legend>
+                            <textarea {...register('issueDescription')} placeholder="Write issue description here..." className="textarea textarea-primary w-full"></textarea>
+
+
+
+
+                            {/* <label className="label">Upload Issue Photo</label>
                         <input type="file" {...register('reportImage')} className="input w-full" placeholder="Upload issue image" /> */}
 
-                        {/* Photo image field */}
-                        <label className="label font-medium text-gray-700 text-[14px]">Upload issue image</label>
+                            {/* Photo image field */}
+                            <label className="label font-medium text-gray-700 text-[14px]">Upload issue image</label>
 
-                        <input type="file" className="file-input w-full "
-                            {...register('image', { required: true })}
-                            placeholder="Upload issue image" />
+                            <input type="file" className="file-input file-input-primary w-full "
+                                {...register('image', { required: true })}
+                                placeholder="Upload issue image" />
 
 
-                        {errors.image?.type === "required" && (
-                            <p className='text-red-500'>Issue image is required</p>
-                        )}
+                            {errors.image?.type === "required" && (
+                                <p className='text-red-500'>Issue image is required</p>
+                            )}
+
+                        </fieldset>
                     </fieldset>
 
                 </div>
@@ -89,16 +122,16 @@ const ReportIssue = () => {
                             className="input w-full" placeholder="Sender Email" />
 
                         {/* sender region */}
-                        <fieldset className="fieldset ">
+                        <fieldset className="fieldset " >
                             <legend className="fieldset-legend">Sender Regions</legend>
-                            <select {...register('senderRegion', { required: true })} defaultValue="Pick a region" className="select w-full" >
+                            <select {...register('senderRegion', { required: true })} defaultValue="Pick a region" className="select w-full">
                                 <option disabled={true}>Pick a region</option>
                                 {
-                                    regions.map((r, i) => <option key={i} value={r}>{r}</option>)
+                                    regions.map((r, i) => <option key={i} value={r}>{r}</option >)
                                 }
                             </select>
 
-                            
+
 
                         </fieldset>
 
@@ -107,14 +140,17 @@ const ReportIssue = () => {
                             <legend className="fieldset-legend">Sender Districts</legend>
                             <select {...register('senderDistrict', {
                                 required: "Sender district is required"
-                            })} defaultValue="Pick a district" className="select w-full">
-                                <option  disabled={true}>Pick a district</option>
+                            })} defaultValue="Pick a district" className="select w-full" required>
+
+                                <option disabled={true}>Pick a district</option>
+
                                 {
                                     districtsByRegion(senderRegion).map((r, i) => <option key={i} value={r}>{r}</option>)
                                 }
+
                             </select>
 
-                            
+
 
                         </fieldset>
 
@@ -127,7 +163,9 @@ const ReportIssue = () => {
                     </fieldset>
 
                 </div>
+
                 <input type="submit" className='btn btn-primary mt-8 text-white' value="Send Issue" />
+
             </form>
         </div>
     );
