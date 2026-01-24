@@ -23,7 +23,7 @@ const Banner = () => {
             <div className='relative'>
                 <img src="https://i.ibb.co.com/SXp99rdB/image.png" />
                 <div className="absolute inset-0 flex gap-4 top-[50%] left-2/5 -translate-x-1/2 ">
-                    <button className='btn' >Repair patholes</button>
+                    <button className='btn' >Repair potholes</button>
 
                 </div>
 

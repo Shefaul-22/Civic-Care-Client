@@ -1,0 +1,107 @@
+// IssueDetails.jsx
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router";
+import UseAuth from "../hooks/UseAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import IssueTimeline from "./IssueTimeline";
+
+const statusColors = {
+  Pending: "bg-yellow-500",
+  "In-Progress": "bg-blue-500",
+  Resolved: "bg-green-500",
+  Closed: "bg-gray-500"
+};
+
+const IssueDetails = () => {
+  const { id } = useParams();
+  const { user } = UseAuth();
+  const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
+  const [issue, setIssue] = useState(null);
+
+  useEffect(() => {
+    axiosSecure.get(`/issues/${id}`)
+      .then(res => setIssue(res.data))
+      .catch(err => console.error(err));
+  }, [id]);
+
+  if (!issue) return <p>Loading...</p>;
+
+  const isCreator = user?.email === issue.senderEmail;
+  const canEdit = isCreator && issue.status === "Pending";
+  const canDelete = isCreator;
+  const canBoost = issue.priority !== "high";
+
+  const handleDelete = async () => {
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!"
+    });
+    if (confirm.isConfirmed) {
+      await axiosSecure.delete(`/issues/${id}`);
+      Swal.fire("Deleted!", "Issue has been deleted.", "success");
+      navigate("/dashboard/my-issues");
+    }
+  };
+
+  const handleBoost = async () => {
+    // simulate payment here
+    const confirm = await Swal.fire({
+      title: "Boost Issue",
+      text: "Pay 100 TK to boost priority",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Pay & Boost"
+    });
+
+    if (confirm.isConfirmed) {
+      await axiosSecure.post(`/issues/${id}/boost`, { boostedBy: user.displayName });
+      Swal.fire("Success", "Issue has been boosted", "success");
+      // reload issue
+      const res = await axiosSecure.get(`/issues/${id}`);
+      setIssue(res.data);
+    }
+  };
+
+  return (
+    <div className="p-4 max-w-4xl mx-auto">
+      <h2 className="text-3xl font-bold mb-2">{issue.issueName}</h2>
+      <div className="flex items-center gap-4 mb-4">
+        <span className={`px-2 py-1 text-white text-xs rounded ${statusColors[issue.status]}`}>
+          {issue.status}
+        </span>
+
+        <span className={`px-2 py-1 text-white text-xs rounded ${issue.priority === "high" ? "bg-red-500" : "bg-gray-500"}`}>
+          {issue.priority === "high" ? "Boosted" : "Normal"}
+        </span>
+        
+      </div>
+      <p className="mb-2"><strong>Category:</strong> {issue.category}</p>
+      <p className="mb-2"><strong>Description:</strong> {issue.issueDescription}</p>
+      <img src={issue.photoURL} alt={issue.issueName} className="w-64 h-64 object-cover my-4 rounded" />
+
+      {issue.staffAssigned && (
+        <div className="mb-4 p-4 border rounded">
+          <h3 className="font-semibold">Assigned Staff</h3>
+          <p>Name: {issue.staffAssigned.name}</p>
+          <p>Email: {issue.staffAssigned.email}</p>
+        </div>
+      )}
+
+      <div className="flex gap-3 mb-6">
+        {canEdit && <button onClick={() => navigate(`/issues/${id}/edit`)} className="btn btn-primary">Edit</button>}
+        {canDelete && <button onClick={handleDelete} className="btn btn-error">Delete</button>}
+        {canBoost && <button onClick={handleBoost} className="btn btn-warning">Boost Priority</button>}
+      </div>
+
+      <h3 className="text-xl font-semibold mb-2">Timeline</h3>
+      <IssueTimeline timeline={issue.timeline} />
+    </div>
+  );
+};
+
+export default IssueDetails;

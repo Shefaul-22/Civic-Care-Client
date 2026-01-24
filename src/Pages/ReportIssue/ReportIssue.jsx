@@ -194,6 +194,7 @@ const ReportIssue = () => {
 
 
                         </fieldset>
+                        
                         {/* Issue description */}
                         <fieldset className='fieldset'>
                             <legend className="label">Issue Details</legend>
@@ -294,7 +295,7 @@ const ReportIssue = () => {
                     />
 
                     {role !== 'premium' && issueCount >= 3 && (
-                        <span className="absolute left-42 -translate-x-1/2 -top-1 w-max bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <span className="absolute left-54 -translate-x-1/2 -top-1 w-max bg-gray-800 text-white  px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-md">
                             Free users can submit up to 3 issues. Upgrade to Premium.
                         </span>
                     )}
