@@ -34,6 +34,8 @@ const DashboardLayout = () => {
                 {/* Page content here */}
 
                 <Outlet></Outlet>
+
+
             </div>
 
             <div className="drawer-side is-drawer-close:overflow-visible">
@@ -77,9 +79,9 @@ const DashboardLayout = () => {
                                 
                                 onClick={closeDrawer}
 
-                                data-tip="My Reports" end>
+                                data-tip="My Issues" end>
                                 <MdReportProblem className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">My Reports</span>
+                                <span className="is-drawer-close:hidden">My Issues</span>
                             </NavLink>
                         </li>
 
@@ -122,6 +124,21 @@ const DashboardLayout = () => {
                                 data-tip="Add & Manage Staff" end>
                                 <MdReportProblem className='w-8 h-8' />
                                 <span className="is-drawer-close:hidden">Add &Manage Staff</span>
+
+                            </NavLink>
+                        </li>
+
+                        <li >
+                            <NavLink to="/dashboard/manage-users" className={({ isActive }) =>
+                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                    : ""
+                                }`} 
+                                
+                                onClick={closeDrawer}
+
+                                data-tip="Manage users" end>
+                                <MdReportProblem className='w-8 h-8' />
+                                <span className="is-drawer-close:hidden">Manage Users</span>
 
                             </NavLink>
                         </li>

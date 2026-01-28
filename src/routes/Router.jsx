@@ -22,6 +22,7 @@ import AdminAllIssues from "../Pages/DashboardRelated/AdminDashboard/AdminAllIss
 import AssignedIssues from "../Pages/DashboardRelated/StaffDashboard/AssignedIssues/AssignedIssues";
 import MyIssues from "../Pages/DashboardRelated/CitizenDashboard/MyIssues/MyIssues";
 import IssueDetails from "../Pages/IssueDetails/IssueDetails";
+import ManageUsers from "../Pages/DashboardRelated/AdminDashboard/ManageUsers";
 
 
 export const router = createBrowserRouter([
@@ -123,12 +124,19 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><AdminAllIssues></AdminAllIssues></PrivateRoute>
             },
 
+            {
+                path: "manage-users",
+                element: <PrivateRoute><ManageUsers></ManageUsers></PrivateRoute>
+            },
+
             // Staff related routes
 
             {
                 path: "staff-assigned-issues",
                 element: <PrivateRoute><AssignedIssues></AssignedIssues></PrivateRoute>
-            }
+            },
+
+            
 
             
         ]
