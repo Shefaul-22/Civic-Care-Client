@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 // import IssueTimeline from "./IssueTimeline";
 import Loading from "../../components/Loading/Loading";
 import EditIssueModal from "../DashboardRelated/CitizenDashboard/MyIssues/EditIssueModal";
+import Timeline from "./Timeline";
 
 const statusColors = {
   Pending: "bg-yellow-500",
@@ -62,7 +63,7 @@ const IssueDetails = () => {
 
 
 
-  console.log('Boosting issue:', issue);
+  // console.log('Boosting issue:', issue);
 
 
 
@@ -75,15 +76,15 @@ const IssueDetails = () => {
   const canBoost = issue.priority !== "high";
 
   const handleDelete = async () => {
-    const confirm = await 
-    
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!"
-    });
+    const confirm = await
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!"
+      });
 
     if (confirm.isConfirmed) {
       await axiosSecure.delete(`/issues/${id}`);
@@ -117,7 +118,7 @@ const IssueDetails = () => {
       window.location.href = res.data.url;
 
     } catch (err) {
-      
+
       console.error("Boost payment error:", err);
       Swal.fire("Error", "Failed to initiate payment.", "error");
     }
@@ -187,8 +188,12 @@ const IssueDetails = () => {
         )
       }
 
-      {/* <h3 className="text-xl font-semibold mb-2">Timeline</h3>
-      <IssueTimeline timeline={issue.timeline} /> */}
+      <h2 className="text-xl font-semibold mb-2">Issue Timeline</h2>
+
+      <Timeline timeline = {issue.timeline}>
+
+      </Timeline>
+
     </div>
   );
 };

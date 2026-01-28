@@ -2,10 +2,27 @@ import React from 'react';
 import { Link, NavLink } from 'react-router';
 import UseAuth from '../../hooks/UseAuth';
 import Swal from 'sweetalert2';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { BiStar } from 'react-icons/bi';
 
 const Navbar = () => {
 
     const { user, logOutUser } = UseAuth();
+    // console.log(user);
+
+    const axiosSecure = useAxiosSecure();
+
+    const { data: userData = [], 
+        // refetch
+
+    } = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users?email=${user.email}`);
+            return res.data;
+        }
+    })
 
     const handleSignOut = () => {
         logOutUser()
@@ -66,7 +83,7 @@ const Navbar = () => {
 
         }>About Us</NavLink>
 
-        
+
 
 
     </>
@@ -120,8 +137,11 @@ const Navbar = () => {
                             >
 
                                 <li className="flex flex-col items-start pb-3 border-b mb-3">
-                                    <span className="text-lg font-semibold">
+                                    <span className="text-lg font-semibold flex items-center">
                                         {user.displayName || "User"}
+                                        {userData.role === "premiumUser" && (
+                                            <span className='bg-yellow-400 flex items-center px-2 py-1 rounded-sm'> <BiStar></BiStar> User</span>
+                                        )}
                                     </span>
 
                                     <span className="text-sm text-gray-500">

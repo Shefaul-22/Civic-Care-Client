@@ -86,11 +86,11 @@ const ProfilePage = () => {
 
                     <div className="text-center sm:text-left">
 
-                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center">
                             {user.displayName || "No Name"}
                             {userData?.role === 'premiumUser' && (
                                 <span className="ml-2 px-2 py-2 text-xs bg-yellow-400 rounded">
-                                    ⭐ Premium
+                                    ⭐ Premium user
                                 </span>
                             )}
                         </h2>
