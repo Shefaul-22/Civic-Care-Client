@@ -13,26 +13,28 @@ const DashboardHome = () => {
 
     const { role, roleLoading } = useRole();
 
+    // console.log("checking role:", role);
+
     if (roleLoading) {
         return <Loading />;
     }
 
-  
+
     if (role === "user" || role === "premiumUser") {
         return <CitizenDashboardHome ></CitizenDashboardHome>;
     }
 
- 
+
     if (role === "staff") {
         return <StaffDashboardHome ></StaffDashboardHome>;
     }
 
-    
+
     if (role === "admin") {
         return <AdminDashboardHome ></AdminDashboardHome>;
     }
 
-  
+
     return (
         <div className="p-6 text-center text-red-500">
             Invalid role detected

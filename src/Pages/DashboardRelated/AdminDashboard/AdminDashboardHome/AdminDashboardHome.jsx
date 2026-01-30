@@ -28,6 +28,7 @@ const AdminDashboardHome = () => {
     } = data;
 
     const {
+
         totalIssues,
         pendingIssues,
         resolvedIssues,
@@ -59,8 +60,10 @@ const AdminDashboardHome = () => {
                 />
             </div>
 
+            {/* Issues by status */}
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Issue Status Chart */}
+               
                 <div className="bg-white rounded shadow p-4">
                     <h3 className="text-lg font-semibold mb-4">
                         Issues by Status
