@@ -135,9 +135,14 @@ const Register = () => {
                     {/* Photo image field */}
                     <label className="label font-medium text-gray-700 text-[14px]">Upload an image</label>
 
-                    <input type="file" className="file-input w-full md:w-2/3"
-                        {...register('photo')}
-                        placeholder="Your Photo" />
+                    <input 
+                    
+                    type="file"
+                    accept='image/*'
+
+                    {...register('photo')}
+                    className="file-input w-full md:w-2/3"
+                    placeholder="Your Photo" />
 
                     {errors.name?.type === "required" && (
                         <p className='text-red-500'>Photo is required</p>

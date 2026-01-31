@@ -14,7 +14,7 @@ import DashboardHome from "../Pages/DashboardRelated/DashboardHome/DashboardHome
 
 import PaymentHistory from "../Pages/DashboardRelated/PaymentHistory/PaymentHistory";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
-import UpdateProfile from "../Pages/UpdateProfile/UpdateProfile";
+
 
 import AddStaff from "../Pages/DashboardRelated/AdminDashboard/AddStaff";
 import ManageStaffs from "../Pages/DashboardRelated/AdminDashboard/ManageStaffs";
@@ -24,6 +24,7 @@ import MyIssues from "../Pages/DashboardRelated/CitizenDashboard/MyIssues/MyIssu
 import IssueDetails from "../Pages/IssueDetails/IssueDetails";
 import ManageUsers from "../Pages/DashboardRelated/AdminDashboard/ManageUsers";
 import AllPaymentsHistory from "../Pages/DashboardRelated/AdminDashboard/AllPaymentsHistory";
+import ServiceCenters from "../Pages/ServiceCenters/ServiceCenters";
 
 
 export const router = createBrowserRouter([
@@ -50,6 +51,12 @@ export const router = createBrowserRouter([
             },
 
             {
+                path: "service-centers",
+                Component: ServiceCenters
+
+            },
+
+            {
                 path: "post-issue",
                 element: <PrivateRoute><ReportIssue></ReportIssue></PrivateRoute>,
                 loader: () => fetch('/serviceCenter.json').then(res => res.json())
@@ -59,11 +66,8 @@ export const router = createBrowserRouter([
             //     path: "profile",
             //     element: <PrivateRoute><ProfilePage></ProfilePage></PrivateRoute>
             // },
-            
-            {
-                path: "updateProfile",
-                element: <PrivateRoute><UpdateProfile></UpdateProfile></PrivateRoute>
-            },
+
+
 
             {
                 path: "issues/:id",
