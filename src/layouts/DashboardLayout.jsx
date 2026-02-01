@@ -1,13 +1,21 @@
 import React from 'react';
+import { NavLink, Outlet } from 'react-router';
 
 import { FaRegCreditCard, FaUser } from 'react-icons/fa';
 import { MdReportProblem } from 'react-icons/md';
-import { NavLink, Outlet } from 'react-router';
+import { LuUserCog } from "react-icons/lu";
+import { HiUserAdd } from "react-icons/hi";
+
+import useRole from '../hooks/useRole';
 
 
 
 
 const DashboardLayout = () => {
+
+    const { role } = useRole();
+
+    //    console.log(role);
 
     const closeDrawer = () => {
         document.getElementById("my-drawer-4").checked = false;
@@ -70,97 +78,145 @@ const DashboardLayout = () => {
                             </NavLink>
                         </li>
 
-                        {/* our dashboard links */}
-                        <li >
-                            <NavLink to="/dashboard/my-issues" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
+                        {/* User related links */}
 
-                                onClick={closeDrawer}
+                        {
+                            (role === "user" || role === "premiumUser") && <>
 
-                                data-tip="My Issues" end>
-                                <MdReportProblem className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">My Issues</span>
-                            </NavLink>
-                        </li>
+                                <li >
+                                    <NavLink to="/dashboard/my-issues" className={({ isActive }) =>
+                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                            : ""
+                                        }`}
 
-                        <li >
-                            <NavLink to="/dashboard/staff-assigned-issues" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
+                                        onClick={closeDrawer}
 
-                                onClick={closeDrawer}
+                                        data-tip="My Issues" end>
+                                        <MdReportProblem className='w-8 h-8' />
+                                        <span className="is-drawer-close:hidden">My Issues</span>
+                                    </NavLink>
+                                </li>
 
-                                data-tip="Assigned Issues" end>
-                                <MdReportProblem className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">Assigned Issues</span>
-                            </NavLink>
-                        </li>
 
-                        <li >
-                            <NavLink to="/dashboard/admin-all-issues" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
+                                <li>
 
-                                onClick={closeDrawer}
+                                    <NavLink to="/dashboard/allPayments-history" className={({ isActive }) =>
+                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                            : ""
+                                        }`}
 
-                                data-tip="All Issues" end>
-                                <MdReportProblem className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">All Issues</span>
-                            </NavLink>
-                        </li>
+                                        onClick={closeDrawer}
 
-                        <li >
-                            <NavLink to="/dashboard/addStaff" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
-
-                                onClick={closeDrawer}
-
-                                data-tip="Add & Manage Staff" end>
-                                <MdReportProblem className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">Add &Manage Staff</span>
-
-                            </NavLink>
-                        </li>
-
-                        <li >
-                            <NavLink to="/dashboard/manage-users" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
-
-                                onClick={closeDrawer}
-
-                                data-tip="Manage users" end>
-                                <MdReportProblem className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">Manage Users</span>
-
-                            </NavLink>
-                        </li>
+                                        data-tip="Payment History" end>
+                                        <FaRegCreditCard className='w-8 h-8' />
+                                        <span className="is-drawer-close:hidden">Payment History</span>
+                                    </NavLink>
+                                </li>
 
 
 
-                        <li>
+                            </>
+                        }
 
-                            <NavLink to="/dashboard/allPayments-history" className={({ isActive }) =>
-                                ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
-                                    : ""
-                                }`}
+                        {/* Staff related dashboard links */}
 
-                                onClick={closeDrawer}
+                        {
+                            (role === "staff") && <>
 
-                                data-tip="Payment History" end>
-                                <FaRegCreditCard className='w-8 h-8' />
-                                <span className="is-drawer-close:hidden">Payment History</span>
-                            </NavLink>
-                        </li>
+                                <li >
+                                    <NavLink to="/dashboard/staff-assigned-issues" className={({ isActive }) =>
+                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                            : ""
+                                        }`}
+
+                                        onClick={closeDrawer}
+
+                                        data-tip="Assigned Issues" end>
+                                        <MdReportProblem className='w-8 h-8' />
+                                        <span className="is-drawer-close:hidden">Assigned Issues</span>
+                                    </NavLink>
+                                </li>
+
+                            </>
+                        }
 
 
+
+                        {/* Admin related dashboard links */}
+
+                        {
+                            (role === "admin") && <>
+
+                                <li >
+                                    <NavLink to="/dashboard/admin-all-issues" className={({ isActive }) =>
+                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                            : ""
+                                        }`}
+
+                                        onClick={closeDrawer}
+
+                                        data-tip="All Issues" end>
+                                        <MdReportProblem className='w-8 h-8' />
+                                        <span className="is-drawer-close:hidden">All Issues</span>
+                                    </NavLink>
+                                </li>
+
+                                <li >
+                                    <NavLink to="/dashboard/addStaff" className={({ isActive }) =>
+                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                            : ""
+                                        }`}
+
+                                        onClick={closeDrawer}
+
+                                        data-tip="Add & Manage Staff" end>
+                                        <HiUserAdd  className='w-8 h-8' />
+                                        <span className="is-drawer-close:hidden">Add &Manage Staff</span>
+
+                                    </NavLink>
+                                </li>
+
+                                <li >
+                                    <NavLink to="/dashboard/manage-users" className={({ isActive }) =>
+                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                            : ""
+                                        }`}
+
+                                        onClick={closeDrawer}
+
+                                        data-tip="Manage users" end>
+                                       
+                                        <LuUserCog className='w-8 h-8' />
+                                        <span className="is-drawer-close:hidden">Manage Users</span>
+
+                                    </NavLink>
+                                </li>
+
+
+
+                                <li>
+
+                                    <NavLink to="/dashboard/allPayments-history" className={({ isActive }) =>
+                                        ` is-drawer-close:tooltip is-drawer-close:tooltip-right ${isActive ? "bg-error text-white border-b border-blue-600"
+                                            : ""
+                                        }`}
+
+                                        onClick={closeDrawer}
+
+                                        data-tip="Payment History" end>
+                                        <FaRegCreditCard className='w-8 h-8' />
+                                        <span className="is-drawer-close:hidden">Payment History</span>
+                                    </NavLink>
+                                </li>
+
+
+
+
+                            </>
+                        }
+
+
+                        {/* Profile */}
                         <li>
 
                             <NavLink to="/dashboard/profile" className={({ isActive }) =>
@@ -176,6 +232,8 @@ const DashboardLayout = () => {
                             </NavLink>
 
                         </li>
+
+
 
 
 
