@@ -5,15 +5,18 @@ import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { BiStar } from 'react-icons/bi';
+import useRole from '../../hooks/useRole';
 
 const Navbar = () => {
 
     const { user, logOutUser } = UseAuth();
     // console.log(user);
 
+    const { role } = useRole();
+
     const axiosSecure = useAxiosSecure();
 
-    const { data: userData = [], 
+    const { data: userData = [],
         // refetch
 
     } = useQuery({
@@ -74,22 +77,24 @@ const Navbar = () => {
             `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
-            
+
         }>About Us</NavLink>
 
         <NavLink to="/service-centers" className={({ isActive }) =>
             `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
-            
+
         }>Service Centers</NavLink>
 
-        <NavLink to="/post-issue" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
-                : "text-gray-800 hover:text-blue-600"
-            }`
+        {
+            role !== "staff" && <NavLink to="/post-issue" className={({ isActive }) =>
+                `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
+                    : "text-gray-800 hover:text-blue-600"
+                }`
 
-        }>Report An Issue</NavLink>
+            }>Report An Issue</NavLink>
+        }
 
 
 
@@ -98,7 +103,7 @@ const Navbar = () => {
 
     return (
         <div>
-            <div className="navbar bg-gradient-to-r from-blue-100 to-indigo-100 shadow-sm">
+            <div className="navbar bg-gradient-to-r from-blue-200 to-indigo-100 shadow-sm">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

@@ -126,7 +126,7 @@ const ProfilePage = () => {
     if (isLoading) return <Loading></Loading>
 
     return (
-        <div className='bg-[#bdd7e7] py-6'>
+        <div className='bg-slate-50 py-6'>
             <div className="max-w-4xl mx-auto bg-gray-300 shadow-lg rounded-2xl  p-12">
 
                 <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 mb-6 ">

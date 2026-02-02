@@ -45,9 +45,9 @@ const AdminAllIssues = () => {
     return (
         <div className="p-6">
 
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">All Issues</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold my-4">All Issues</h2>
 
-            <table className="table table-zebra w-full table-fixed text-sm md:text-base">
+            <table className="table table-zebra w-full table-fixed text-xs md:text-base">
 
                 {/* <thead>
                     <tr>
@@ -74,7 +74,7 @@ const AdminAllIssues = () => {
                             Status
                         </th>
 
-                        <th className="whitespace-normal  hidden md:block">
+                        <th className="whitespace-normal  hidden md:table-cell">
                             Priority
                         </th>
 
@@ -93,14 +93,14 @@ const AdminAllIssues = () => {
                     {
                         issues.map(issue => (
 
-                            <tr key={issue._id}>
+                            <tr key={issue._id} >
 
                                 <td className="whitespace-normal max-w-[120px]">{issue.title}</td>
                                 <td>{issue.category}</td>
 
                                 <td>{issue.status}</td>
 
-                                <td className="hidden md:block"> 
+                                <td className="hidden md:table-cell">
                                     {
                                         issue.priority === "high"
                                             ? <span className="badge badge-error">High</span>
@@ -115,15 +115,17 @@ const AdminAllIssues = () => {
                                     }
                                 </td>
 
-                                <td className="space-x-2 space-y-2">
-                                    {!issue.staffEmail && (
-                                        <button
-                                            className="btn btn-sm btn-primary"
-                                            onClick={() => setSelectedIssue(issue)}
-                                        >
-                                            Assign Staff
-                                        </button>
-                                    )}
+                                <td className="flex items-center flex-col md:flex-row gap-2">
+
+                                    {
+                                        !issue.staffEmail && (
+                                            <button
+                                                className="btn btn-sm btn-primary"
+                                                onClick={() => setSelectedIssue(issue)}
+                                            >
+                                                Assign Staff
+                                            </button>
+                                        )}
 
                                     {
                                         issue.status === "pending" ? (
@@ -134,6 +136,7 @@ const AdminAllIssues = () => {
                                             >
                                                 Reject
                                             </button>
+
                                         ) : issue.status === "closed" ?
                                             <span>Issue Resolved & Closed</span>
 
