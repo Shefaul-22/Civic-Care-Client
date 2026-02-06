@@ -42,6 +42,15 @@ const IssueCard = ({ issue, user, refetch, axiosSecure }) => {
         }
     };
 
+    const handleViewDetails = () => {
+
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+        navigate(`/issues/${issue._id}`);
+    };
+
     return (
 
         <div className="card bg-base-200 shadow-lg ">
@@ -101,7 +110,7 @@ const IssueCard = ({ issue, user, refetch, axiosSecure }) => {
 
                     <button
                         className="btn btn-sm btn-primary"
-                        onClick={() => navigate(`/issues/${issue._id}`)}
+                        onClick={handleViewDetails}
                     >
                         View Details
                     </button>

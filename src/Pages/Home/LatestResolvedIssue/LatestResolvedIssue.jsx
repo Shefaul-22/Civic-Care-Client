@@ -5,11 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import IssueCard from "./IssueCard";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
+import UseAuth from "../../../hooks/UseAuth";
 
 
 const LatestResolvedIssues = () => {
 
     const axiosSecure = useAxiosSecure();
+
+    const {user} = UseAuth();
     
 
     const { data: issues = [], isLoading } = useQuery({
@@ -34,9 +37,12 @@ const LatestResolvedIssues = () => {
 
                 {
                     issues.map(issue => (
+
                         <IssueCard
+                        
                             key={issue._id}
                             issue={issue}
+                            user={user}
                             
                         />
                     ))}

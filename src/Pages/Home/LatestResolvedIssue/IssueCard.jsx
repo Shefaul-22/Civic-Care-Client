@@ -5,13 +5,21 @@ import { useNavigate } from 'react-router';
 
 import Swal from "sweetalert2";
 
-const IssueCard = ({ issue,  }) => {
+const IssueCard = ({ issue, user}) => {
 
     // console.log(user,issue);
 
     const navigate = useNavigate();
 
-    
+    const handleViewDetails = () => {
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+        navigate(`/issues/${issue._id}`);
+    };
+
+
 
     return (
 
@@ -63,14 +71,14 @@ const IssueCard = ({ issue,  }) => {
 
                 {/* Actions */}
                 <div className="flex justify-between items-center mt-4">
-                    
+
                     <button
                         className="btn btn-sm btn-primary w-full"
-                        onClick={() => navigate(`/issues/${issue._id}`)}
+                        onClick={handleViewDetails}
                     >
                         View Details
                     </button>
-                    
+
                 </div>
             </div>
 

@@ -184,7 +184,7 @@ const IssueDetails = () => {
       <div className="flex  flex-col md:flex-row gap-3 md:gap-6">
 
         <div className="flex-1 ">
-          <h2 className="text-3xl font-bold mb-2">Issue Name : {issue.title}</h2>
+          <h2 className="text-xl md:text-3xl font-bold mb-2">Issue Name : {issue.title}</h2>
 
 
           <p className="mb-2 text-xl"><strong>Category :</strong> {issue.category}</p>
@@ -257,7 +257,7 @@ const IssueDetails = () => {
 
             <h3 className="text-2xl md:text-4xl mb-2">Assigned Staff Details : </h3>
 
-            <div className="mb-6 p-4 border rounded-lg shadow-md bg-base-200 flex flex-row  items-center gap-4">
+            <div className="mb-6 p-4 border rounded-lg shadow-md bg-base-200 flex flex-col md:flex-row  items-center gap-4">
 
               <img
                 src={assignStaff.photoURL || "staffImg"}

@@ -52,21 +52,21 @@ const Navbar = () => {
     const links = <>
 
         <NavLink to="/" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
         }>Home</NavLink>
 
         <NavLink to="/allIssues" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
         }>All Issues</NavLink>
 
         <NavLink to="/services" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
@@ -74,14 +74,14 @@ const Navbar = () => {
 
 
         <NavLink to="/aboutUs" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
         }>About Us</NavLink>
 
         <NavLink to="/service-centers" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
+            `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                 : "text-gray-800 hover:text-blue-600"
             }`
 
@@ -89,7 +89,7 @@ const Navbar = () => {
 
         {
             (role === "user" || role === "premiumUser") && <NavLink to="/post-issue" className={({ isActive }) =>
-                `mr-5 pb-1 font-semibold ${isActive ? "text-blue-700 border-b-2 border-blue-600"
+                `mr-5 pb-1 font-semibold ${isActive ? "text-blue-800 border-b-2 border-blue-600"
                     : "text-gray-800 hover:text-blue-600"
                 }`
 
@@ -103,7 +103,7 @@ const Navbar = () => {
 
     return (
         <div>
-            <div className="navbar bg-gradient-to-r from-blue-200 to-indigo-100 shadow-sm">
+            <div className="navbar bg-gradient-to-r from-blue-300 to-indigo-200 shadow-sm">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

@@ -25,7 +25,7 @@ const DashboardLayout = () => {
 
     return (
 
-        <div className="drawer lg:drawer-open p-2 md:p-4 lg:p-6 w-full bg-slate-50">
+        <div className="drawer lg:drawer-open p-2 md:p-4 lg:p-6 w-full bg-slate-100">
 
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
@@ -44,7 +44,7 @@ const DashboardLayout = () => {
 
                 {/* Page content here */}
 
-                <div className='w-full  px-2 md:px-4 py-3 flex flex-col items-stretch bg-slate-50'>
+                <div className='w-full  px-2 md:px-4 py-3 flex flex-col items-stretch bg-slate-100'>
                     <Outlet></Outlet>
                 </div>
 
