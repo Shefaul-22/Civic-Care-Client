@@ -35,7 +35,7 @@ const AllIssues = () => {
     //     }
     // });
 
-    const { data = {},isLoading, refetch, isFetching } = useQuery({
+    const { data = {}, refetch, isFetching } = useQuery({
 
         queryKey: [
             "allIssues",
@@ -83,7 +83,7 @@ const AllIssues = () => {
 
     } = data
 
-    if (loading || isLoading) return <Loading />;
+    if (loading ) return <Loading />;
 
     return (
 
