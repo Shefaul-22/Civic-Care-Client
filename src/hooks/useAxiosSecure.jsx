@@ -12,21 +12,31 @@ const axiosSecure = axios.create({
 })
 
 const useAxiosSecure = () => {
-    const { user, logOut } = UseAuth();
+    const { user, logOutUser } = UseAuth();
     // console.log(user);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // intercept request
-        const reqInterceptor = axiosSecure.interceptors.request.use(config => {
-            config.headers.Authorization = `Bearer ${user?.accessToken}`
-            return config
-        })
+
+
+        const reqInterceptor = axiosSecure.interceptors.request.use(
+            async (config) => {
+
+                if (!user) return config;
+
+
+                const token = await user.getIdToken();
+                config.headers.authorization = `Bearer ${token}`;
+
+
+                return config;
+            }
+        )
 
         // interceptor response
         const resInterceptor = axiosSecure.interceptors.response.use((response) => {
             return response;
-        }, (error) => {
+        }, async (error) => {
             console.log(error);
 
             // const statusCode = error.status;
@@ -39,8 +49,12 @@ const useAxiosSecure = () => {
 
             const statusCode = error.response?.status;
 
-            if (statusCode === 401) {
-                logOut().then(() => navigate('/login'));
+            if (statusCode === 401 && user) {
+                await logOutUser();
+                // navigate('/login');
+
+                navigate('/login', { replace: true });
+
 
             }
 
@@ -62,7 +76,7 @@ const useAxiosSecure = () => {
             axiosSecure.interceptors.response.eject(resInterceptor);
         }
 
-    }, [user, logOut, navigate])
+    }, [user, logOutUser, navigate])
 
     return axiosSecure;
 };
