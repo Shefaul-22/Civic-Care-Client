@@ -110,7 +110,7 @@ const AllPaymentsHistory = () => {
 
                                     <td className="w-1">{(currentPage - 1) * limit + i + 1}</td>
 
-                                    <td className="whitespace-normal max-w-[100px]">{p.title}</td>
+                                    <td className="whitespace-normal max-w-[100px]">{p.title || p.type}</td>
 
 
 
