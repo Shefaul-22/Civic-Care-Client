@@ -1,0 +1,111 @@
+:root {
+    /* =========================
+       60% → Neutral Colours
+       Background, cards, layout
+    ========================== */
+    --color-bg-primary: #F8FAFC;
+    --color-bg-secondary: #F1F5F9;
+    --color-bg-card: #FFFFFF;
+
+    --color-border: #E2E8F0;
+
+    --color-text-primary: #0F172A;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748B;
+
+    /* =========================
+       30% → Primary Brand Colours
+    ========================== */
+    --color-primary: #1D4ED8;
+    --color-primary-hover: #1E40AF;
+    --color-primary-light: #3B82F6;
+
+    --color-secondary: #0EA5E9;
+    --color-secondary-hover: #0284C7;
+
+    /* =========================
+       10% → Accent Colours
+    ========================== */
+    --color-accent: #F59E0B;
+    --color-accent-hover: #D97706;
+
+    /* =========================
+       Status Colours
+    ========================== */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+    --color-info: #3B82F6;
+
+    /* =========================
+       Gradient Colours
+    ========================== */
+    --gradient-primary: linear-gradient(to right, #1D4ED8, #0EA5E9);
+    --gradient-accent: linear-gradient(to right, #F59E0B, #D97706);
+
+    /* =========================
+       Shadow / Elevation
+    ========================== */
+    --shadow-light: 0 1px 3px rgba(15, 23, 42, 0.06);
+    --shadow-medium: 0 4px 6px rgba(15, 23, 42, 0.1);
+    --shadow-heavy: 0 10px 15px rgba(15, 23, 42, 0.15);
+
+    /* =========================
+       Hover / Focus Backgrounds
+    ========================== */
+    --bg-hover-light: #E5E7EB;
+    --border-focus: #3B82F6;
+
+    /* =========================
+       Text variants
+    ========================== */
+    --text-link: #2563EB;
+    --text-link-hover: #1D4ED8;
+    --text-inverse: #FFFFFF;
+
+    /* =========================
+       Form / Input
+    ========================== */
+    --input-bg: #FFFFFF;
+    --input-border: #CBD5E1;
+    --input-placeholder: #94A3B8;
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+    --color-bg-primary: #0F172A;
+    --color-bg-secondary: #1E293B;
+    --color-bg-card: #1E293B;
+
+    --color-text-primary: #F8FAFC;
+    --color-text-secondary: #CBD5E1;
+    --color-text-muted: #94A3B8;
+
+    --color-border: #334155;
+
+    --color-primary: #3B82F6;
+    --color-primary-hover: #2563EB;
+    --color-secondary: #06B6D4;
+    --color-secondary-hover: #0284C7;
+
+    --color-accent: #F59E0B;
+    --color-accent-hover: #D97706;
+
+    --gradient-primary: linear-gradient(to right, #1E40AF, #0EA5E9);
+    --gradient-accent: linear-gradient(to right, #F59E0B, #D97706);
+
+    --shadow-light: 0 1px 3px rgba(15, 23, 42, 0.2);
+    --shadow-medium: 0 4px 6px rgba(15, 23, 42, 0.3);
+    --shadow-heavy: 0 10px 15px rgba(15, 23, 42, 0.4);
+
+    --bg-hover-light: #334155;
+    --border-focus: #3B82F6;
+
+    --text-link: #60A5FA;
+    --text-link-hover: #3B82F6;
+    --text-inverse: #0F172A;
+
+    --input-bg: #1E293B;
+    --input-border: #475569;
+    --input-placeholder: #94A3B8;
+}
