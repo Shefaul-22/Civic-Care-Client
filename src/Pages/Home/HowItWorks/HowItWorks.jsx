@@ -29,7 +29,7 @@ const steps = [
 
 const HowItWorks = () => {
     return (
-        <section className="py-12 md:py-16 bg-base-100">
+        <section className="py-6 md:py-10 bg-base-100">
             <div className="container mx-auto px-4">
 
                 {/* Section Header */}
@@ -59,7 +59,7 @@ const HowItWorks = () => {
                             </div>
 
                             {/* Icon Container */}
-                            <div className="w-32 h-32 rounded-[2.5rem] bg-base-100 border-2 border-base-200 flex items-center justify-center p-6 shadow-xl shadow-base-200/50 group-hover:border-[#fa0bd2]/40 group-hover:shadow-[#fa0bd2]/5 transition-all duration-500 bg-white">
+                            <div className="w-48 h-48 rounded-[2.5rem] bg-base-100 border-2 border-base-200 flex items-center justify-center p-6 shadow-xl shadow-base-200/50 group-hover:border-[#fa0bd2]/40 group-hover:shadow-[#fa0bd2]/5 transition-all duration-500 bg-white">
                                 <img
                                     src={step.icon}
                                     alt={step.title}

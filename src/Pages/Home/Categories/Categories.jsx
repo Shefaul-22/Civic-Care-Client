@@ -15,7 +15,7 @@ import { Link } from "react-router";
 const Categories = () => {
     const axios = UseAxios();
 
-    // ক্যাটাগরি অনুযায়ী আইকন এবং কালার সেট করার জন্য একটি ম্যাপ
+    
     const categoryStyles = {
         "Broken streetlights": { icon: <IoFlashOutline />, color: "text-yellow-500 bg-yellow-500/10" },
         "Potholes": { icon: <IoConstructOutline />, color: "text-orange-600 bg-orange-600/10" },
@@ -50,7 +50,7 @@ const Categories = () => {
     if (isLoading) return <Loading />;
 
     return (
-        <section className="py-16 md:py-24">
+        <section className="py-6 md:py-10">
             <div className="container mx-auto px-4">
 
                 {/* Section Header */}
@@ -67,7 +67,7 @@ const Categories = () => {
                 {/* Categories Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {data.map((category, index) => {
-                        // ক্যাটাগরি নেম অনুযায়ী স্টাইল খুঁজে বের করা অথবা ডিফল্ট স্টাইল ব্যবহার করা
+                        
                         const style = categoryStyles[category.name] || categoryStyles["Default"];
 
                         return (

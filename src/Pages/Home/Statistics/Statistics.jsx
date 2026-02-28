@@ -57,7 +57,7 @@ const Statistics = () => {
     ];
 
     return (
-        <section className="py-12 md:py-16">
+        <section className="py-6 md:py-10">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="text-center mb-12">

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, Autoplay } from 'swiper/modules';
 
@@ -8,88 +6,94 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
-
 import ReviewCard from './ReviewCard';
 
-
-
 const Reviews = () => {
-
-    const [reviews, setRiviews] = useState([])
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         fetch('reviews.json')
             .then(res => res.json())
             .then(result => {
-                // console.log(result);
-                setRiviews(result)
-            })
-    }, [])
+                setReviews(result);
+            });
+    }, []);
 
     return (
-
-        <div className=''>
-
-            <div className='text-center my-7 space-y-4 '>
-                <h2 className='font-bold text-xl md:text-5xl '>
-                    What our citi<span className='text-[#fa0bd2]'>zens are saying</span>
+        <section className="py-6 md:py-10 overflow-hidden">
+            {/* Section Header */}
+            <div className='text-center mb-12 space-y-4'>
+                <h2 className='text-4xl md:text-6xl font-black text-base-content tracking-tighter'>
+                    What our citi<span className='text-[#fa0bd2]'>zens say</span>
                 </h2>
-                <p className='px-6 md:px-16 lg:px-32 text-gray-800 mb-4 md:mb-6'>
-                    Real feedback from citizens using CivicCare to report and track public issues.
-                    Hear how our platform has helped improve transparency, speed up responses, and make city services more efficient.
+                <p className='max-w-3xl mx-auto text-base-content/60 font-medium px-4 leading-relaxed'>
+                    Real feedback from citizens using CivicCare to improve transparency and speed up public resolutions.
                 </p>
-
+                <div className="flex justify-center gap-1">
+                    <div className="w-12 h-1 bg-[#fa0bd2] rounded-full"></div>
+                    <div className="w-4 h-1 bg-base-300 rounded-full"></div>
+                </div>
             </div>
 
-            {reviews.length > 0 && (
-                <Swiper
-                    loop={true}
+            {/* Swiper Section */}
+            <div className="px-4">
+                {reviews.length > 0 && (
+                    <Swiper
+                        loop={true}
+                        effect={'coverflow'}
+                        grabCursor={true}
+                        centeredSlides={true}
+                        slidesPerView={'auto'}
+                        initialSlide={1}
+                        coverflowEffect={{
+                            rotate: 0, 
+                            stretch: 0,
+                            depth: 100,
+                            modifier: 2.5,
+                            slideShadows: false, 
+                        }}
+                        autoplay={{
+                            delay: 2500,
+                            disableOnInteraction: false,
+                            pauseOnMouseEnter: true,
+                        }}
+                        pagination={{
+                            clickable: true,
+                            dynamicBullets: true,
+                        }}
+                        breakpoints={{
+                            320: { slidesPerView: 1.1, spaceBetween: 10 },
+                            640: { slidesPerView: 1.8, spaceBetween: 20 },
+                            1024: { slidesPerView: 2.5, spaceBetween: 30 },
+                            1440: { slidesPerView: 3, spaceBetween: 40 },
+                        }}
+                        modules={[EffectCoverflow, Pagination, Autoplay]}
+                        className="mySwiper !pb-16" 
+                    >
+                        {reviews.map(review => (
+                            <SwiperSlide key={review.id} className="max-w-[450px]">
+                                <ReviewCard review={review} />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                )}
+            </div>
 
-                    effect={'coverflow'}
-                    grabCursor={true}
-                    centeredSlides={true}
-                    slidesPerView={1.2}
-
-                    breakpoints={{
-                        //  screen width >= 640px (Tablet)
-                        640: {
-                            slidesPerView: 2,
-                        },
-                        // screen width >= 1024px (Desktop)
-                        1024: {
-                            slidesPerView: 3,
-                        },
-                    }}
-                    coverflowEffect={{
-                        rotate: 10,
-                        stretch: "50%",
-                        scale: 0.75,
-                        depth: 100,
-                        modifier: 1,
-                        slideShadows: true,
-                    }}
-
-                    autoplay={{
-                        delay: 1500,
-                        disableOnInteraction: false,
-                        pauseOnMouseEnter: true,
-                    }}
-                    pagination={true}
-                    modules={[EffectCoverflow, Pagination, Autoplay]}
-                    className="mySwiper"
-                >
-                    {
-                        reviews.map(review => <SwiperSlide key={review.id}>
-                            <ReviewCard review={review}></ReviewCard>
-                        </SwiperSlide>)
-                    }
-
-
-                </Swiper>
-            )}
-
-        </div>
-
+            {/* Custom Pagination CSS (Global Style) */}
+            <style jsx global>{`
+                .swiper-pagination-bullet-active {
+                    background: #fa0bd2 !important;
+                    width: 24px !important;
+                    border-radius: 5px !important;
+                }
+                .swiper-slide {
+                    transition: transform 0.3s ease;
+                }
+                .swiper-slide-active {
+                   
+                }
+            `}</style>
+        </section>
     );
 };
 

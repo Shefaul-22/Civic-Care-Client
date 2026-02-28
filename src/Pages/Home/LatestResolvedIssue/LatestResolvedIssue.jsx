@@ -28,7 +28,7 @@ const LatestResolvedIssues = () => {
     }
 
     return (
-        <section className="py-12 md:py-24 bg-base-100">
+        <section className="py-10 md:py-16 bg-base-100">
             <div className="container mx-auto px-4">
 
                 {/* Section Header */}
