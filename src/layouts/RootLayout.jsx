@@ -3,11 +3,7 @@ import { Outlet, useMatches } from 'react-router';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 
-
 const RootLayout = () => {
-
-    
-
     const matches = useMatches();
 
     useEffect(() => {
@@ -20,21 +16,29 @@ const RootLayout = () => {
         } else {
             document.title = "Civic Care";
         }
-
     }, [matches]);
 
     return (
-        <div className='bg-gray-100'>
-            <div>
-                <Navbar></Navbar>
-            </div>
-            <div className=' pt-16 md:pt-16 bg-gray-100'>
-                <Outlet></Outlet>
-            </div>
+        
+        <div className='min-h-screen bg-base-100 text-base-content transition-colors duration-300 flex flex-col'>
+            
+            
+            <header className="fixed top-0 w-full z-50">
+                <Navbar />
+            </header>
 
-            <div>
-                <Footer></Footer>
-            </div>
+            {/* Main Content Area */}
+            
+            <main className='flex-grow pt-16 md:pt-20 bg-base-200/30'>
+                <div className="max-w-7xl mx-auto px-0 md:px-0">
+                    <Outlet />
+                </div>
+            </main>
+
+            {/* Footer Section */}
+            <footer>
+                <Footer />
+            </footer>
         </div>
     );
 };

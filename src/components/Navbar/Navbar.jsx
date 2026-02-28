@@ -6,183 +6,124 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { BiSolidHomeCircle, BiStar } from 'react-icons/bi';
 import useRole from '../../hooks/useRole';
-import { MdContactPhone, MdOutlineLogin, MdReportProblem, MdSyncProblem } from 'react-icons/md';
+import { MdContactPhone, MdOutlineLogin, MdReportProblem, MdSyncProblem, MdDashboard } from 'react-icons/md';
 import { FcServices } from 'react-icons/fc';
 import { HiInformationCircle } from 'react-icons/hi';
+import Logo from '../Shared/Logo'; // আমরা যে Logo কম্পোনেন্টটি বানিয়েছিলাম
 
 const Navbar = () => {
-
     const { user, logOutUser } = UseAuth();
-    // console.log(user);
-
     const { role } = useRole();
-
     const axiosSecure = useAxiosSecure();
 
-    const { data: userData = {},
-        // refetch
-
-    } = useQuery({
+    const { data: userData = {} } = useQuery({
         queryKey: ['user', user?.email],
         enabled: !!user?.email,
-
         queryFn: async () => {
             const res = await axiosSecure.get(`/users?email=${encodeURIComponent(user.email)}`);
             return res.data;
         }
-    })
-
-    // console.log(userData.role);
-
+    });
 
     const handleSignOut = () => {
         logOutUser()
             .then(() => {
                 Swal.fire({
-                    title: "Signed Out!",
-                    text: "You have signed out successfully.",
                     icon: "success",
-                    confirmButtonColor: "#6366F3",
+                    title: "Signed Out!",
+                    text: "See you again soon.",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'var(--b1)',
+                    color: 'var(--bc)'
                 });
-            })
-            .catch(error => {
-                // console.log(error);
+            });
+    };
 
-                Swal.fire({
-                    title: "Error!",
-                    text: error.message,
-                    icon: "error",
-                    confirmButtonColor: "#EF4444",
-                });
-            })
-    }
+    // ইউনিক নাভলিঙ্ক স্টাইল
+    const navItemStyles = ({ isActive }) =>
+        `flex items-center gap-1.5 px-3 py-2 rounded-lg font-bold transition-all duration-300 ${isActive
+            ? "text-[#fa0bd2] bg-[#fa0bd2]/10 shadow-[inset_0_0_10px_rgba(250,11,210,0.1)]"
+            : "text-base-content/70 hover:text-[#fa0bd2] hover:bg-base-200"
+        }`;
 
-    const links = <>
-
-        <NavLink to="/" className={({ isActive }) =>
-            `mr-5  font-semibold flex  ${isActive ? "text-blue-700 border-b-2 border-blue-600 "
-                : "text-gray-800 hover:text-blue-600"
-            }`
-
-        }><BiSolidHomeCircle size={20} /><span className='pl-1'>Home</span></NavLink>
-
-        <NavLink to="/allIssues" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
-                : "text-gray-800 hover:text-blue-600"
-            }`
-
-        }><MdSyncProblem size={20} /><span className='pl-1'>All Issues</span></NavLink>
-
-        <NavLink to="/services" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
-                : "text-gray-800 hover:text-blue-600"
-            }`
-
-        }><FcServices size={20} /><span className='pl-1'>Services</span></NavLink>
-
-
-        <NavLink to="/aboutUs" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
-                : "text-gray-800 hover:text-blue-600"
-            }`
-
-        }><HiInformationCircle size={20} /><span className='pl-1'>About Us</span></NavLink>
-
-        <NavLink to="/service-centers" className={({ isActive }) =>
-            `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
-                : "text-gray-800 hover:text-blue-600"
-            }`
-
-        }><MdContactPhone size={20}/><span className='pl-1'>Contact</span></NavLink>
-
-        {
-            (role === "user" || role === "premiumUser") && <NavLink to="/post-issue" className={({ isActive }) =>
-                `mr-5 pb-1 font-semibold flex ${isActive ? "text-blue-800 border-b-2 border-blue-600"
-                    : "text-gray-800 hover:text-blue-600"
-                }`
-
-            }><MdReportProblem size={20} /><span className='pl-1'>Report An Issue</span></NavLink>
-        }
-
-
-
-    </>
-
+    const links = (
+        <>
+            <li><NavLink to="/" className={navItemStyles}><BiSolidHomeCircle size={20} />Home</NavLink></li>
+            <li><NavLink to="/allIssues" className={navItemStyles}><MdSyncProblem size={20} />All Issues</NavLink></li>
+            <li><NavLink to="/services" className={navItemStyles}><FcServices size={20} />Services</NavLink></li>
+            <li><NavLink to="/aboutUs" className={navItemStyles}><HiInformationCircle size={20} />About Us</NavLink></li>
+            <li><NavLink to="/service-centers" className={navItemStyles}><MdContactPhone size={20} />Contact</NavLink></li>
+            {(role === "user" || role === "premiumUser") && (
+                <li><NavLink to="/post-issue" className={navItemStyles}><MdReportProblem size={20} />Report Issue</NavLink></li>
+            )}
+        </>
+    );
 
     return (
-        <div>
-            <div className="navbar fixed top-0 z-50 bg-gradient-to-r from-purple-300 to-indigo-100 shadow-sm">
+        <div className="fixed top-0 left-0 right-0 z-50 flex justify-center p-2 md:p-4 pointer-events-none">
+            <div className="navbar w-full max-w-7xl pointer-events-auto bg-base-100/70 backdrop-blur-md border border-base-300/50 shadow-lg rounded-2xl md:rounded-full px-4 transition-all duration-500">
+
+                {/* Navbar Start */}
                 <div className="navbar-start">
                     <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+                        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden hover:bg-[#fa0bd2]/10">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#fa0bd2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                            </svg>
                         </div>
-                        <ul
-                            tabIndex="-1"
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow flex gap-2">
-
+                        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-4 z-50 p-2 shadow-2xl bg-base-100 rounded-2xl w-64 border border-base-300 gap-1">
                             {links}
-
                         </ul>
                     </div>
-                    <Link to="/" className="btn btn-ghost text-xl"><img className="w-10 h-10 rounded-full" src="https://i.ibb.co.com/7d0qMChV/image.png" alt="Logo" />CivicCare</Link>
+                    {/* লোগো কম্পোনেন্ট ব্যবহার করা হয়েছে */}
+                    <div className="scale-90 md:scale-100 origin-left">
+                        <Logo />
+                    </div>
                 </div>
+
+                {/* Navbar Center */}
                 <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
-
+                    <ul className="menu menu-horizontal gap-1 px-1">
                         {links}
-
                     </ul>
                 </div>
-                <div className="navbar-end">
 
-                    {/* <Link to="/login" className="btn text-white bg-blue-600 hover:bg-blue-500">Login</Link> */}
+                {/* Navbar End */}
+                <div className="navbar-end gap-3">
                     {user ? (
                         <div className="dropdown dropdown-end">
-
-
-                            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <label tabIndex={0} className="btn btn-ghost btn-circle avatar online">
+                                <div className="w-10 rounded-full ring-2 ring-[#fa0bd2] ring-offset-base-100 ring-offset-2 hover:scale-110 transition-transform">
                                     <img
                                         alt="User"
-                                        src={user.photoURL ? user.photoURL : "https://i.ibb.co.com/JWv2ftcD/usericon.jpg"}
+                                        src={user.photoURL || "https://i.ibb.co.com/JWv2ftcD/usericon.jpg"}
                                     />
                                 </div>
                             </label>
-
-                            {/* photo click -> open dropdown here */}
-                            <ul
-                                tabIndex={0}
-                                className="mt-3 z-50 p-4 shadow-xl menu menu-sm dropdown-content bg-base-200 rounded-xl w-60"
-                            >
-
-                                <li className="flex flex-col items-start pb-3 border-b mb-3">
-
-                                    <span className="text-lg font-semibold flex items-center">
-                                        {user.displayName || "User"}
-                                        {userData.role === "premiumUser" && (
-                                            <span className='bg-yellow-400 flex items-center px-2 py-1 rounded-sm'> <BiStar></BiStar> User</span>
-                                        )}
-                                    </span>
-
-                                    <span className="text-sm text-gray-500">
-                                        {user.email}
-                                    </span>
+                            <ul tabIndex={0} className="mt-4 z-50 p-3 shadow-2xl menu menu-sm dropdown-content bg-base-100 rounded-2xl w-64 border border-base-300">
+                                <li className="px-4 py-3 mb-2 bg-base-200/50 rounded-xl">
+                                    <div className="flex flex-col items-start gap-1 p-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-black text-base-content">{user.displayName}</span>
+                                            {userData.role === "premiumUser" && (
+                                                <span className='bg-gradient-to-r from-yellow-400 to-orange-500 text-[10px] text-white font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm animate-pulse'>
+                                                    <BiStar /> PRO
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className="text-xs text-base-content/50 truncate w-full">{user.email}</span>
+                                    </div>
                                 </li>
-
-                                {/* <Link to="/profile" className="btn btn-error btn-sm w-full text-white mb-3">
-                                    Profile
-                                </Link> */}
-
-                                <Link to="/dashboard" className="btn btn-error btn-sm w-full text-white mb-3">
-                                    Dashboard
-                                </Link>
-
-
                                 <li>
+                                    <Link to="/dashboard" className="flex items-center gap-2 py-3 hover:bg-[#fa0bd2]/10 hover:text-[#fa0bd2] font-bold">
+                                        <MdDashboard size={18} /> Dashboard
+                                    </Link>
+                                </li>
+                                <li className="mt-2 border-t border-base-300 pt-2">
                                     <button
                                         onClick={handleSignOut}
-                                        className="btn btn-error btn-sm w-full text-white"
+                                        className="btn btn-error btn-sm text-white rounded-xl hover:bg-red-600 border-none"
                                     >
                                         Log Out
                                     </button>
@@ -190,11 +131,11 @@ const Navbar = () => {
                             </ul>
                         </div>
                     ) : (
-                        <Link to="/login" className="btn text-white bg-primary flex items-center">
-                            <MdOutlineLogin size={20}/><span>Login</span>
+                        <Link to="/login" className="group flex items-center gap-2 bg-gradient-to-r from-[#fa0bd2] to-[#b00794] text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-[#fa0bd2]/20 hover:shadow-[#fa0bd2]/40 transition-all active:scale-95">
+                            <MdOutlineLogin size={20} className="group-hover:translate-x-1 transition-transform" />
+                            <span>Sign In</span>
                         </Link>
                     )}
-
                 </div>
             </div>
         </div>

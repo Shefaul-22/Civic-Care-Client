@@ -14,7 +14,7 @@ const HomePage = () => {
     return (
         <div >
             <Banner></Banner>
-            <div className='space-y-4 md:space-y-10 max-w-7xl mx-auto'>
+            <div className='space-y-6 md:space-y-10 max-w-7xl px-4 md:px-0'>
                 <LatestResolvedIssues></LatestResolvedIssues>
                 <Statistics></Statistics>
                 <Categories></Categories>
