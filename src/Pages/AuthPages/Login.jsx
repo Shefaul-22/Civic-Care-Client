@@ -9,10 +9,53 @@ import Swal from 'sweetalert2';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const navigate = useNavigate();
-    const { signInUser } = UseAuth();
+    const { signInUser, resetPassword } = UseAuth();
     const location = useLocation();
+
+
+    const userEmail = watch("email");
+
+    const handleForgotPassword = () => {
+        if (!userEmail) {
+            return Swal.fire({
+                icon: "warning",
+                title: "Email Required",
+                text: "Please type your email address first in the email field.",
+                confirmButtonColor: '#fa0bd2'
+            });
+        }
+
+        Swal.fire({
+            title: 'Reset Password?',
+            text: `Send a password reset link to ${userEmail}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#fa0bd2',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Send it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                resetPassword(userEmail)
+                    .then(() => {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Email Sent!",
+                            text: "Please check your inbox (or spam) for the reset link.",
+                            confirmButtonColor: '#fa0bd2'
+                        });
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: error.message,
+                        });
+                    });
+            }
+        });
+    };
 
     const handleLogin = (data) => {
         Swal.fire({
@@ -86,7 +129,14 @@ const Login = () => {
                         <label className="label py-0">
                             <span className="label-text font-bold text-base-content/70 uppercase text-[10px] tracking-widest">Password</span>
                         </label>
-                        <Link className="text-[11px] font-bold text-[#fa0bd2] hover:underline opacity-80">Forgot Password?</Link>
+                        {/* Forgot Password Button */}
+                        <button
+                            type="button" 
+                            onClick={handleForgotPassword}
+                            className="text-[11px] font-bold text-[#fa0bd2] hover:underline opacity-80 transition-all cursor-pointer"
+                        >
+                            Forgot Password?
+                        </button>
                     </div>
                     <div className="relative group">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 group-focus-within:text-[#fa0bd2] transition-colors">
@@ -94,7 +144,7 @@ const Login = () => {
                         </div>
                         <input
                             type={showPassword ? "text" : "password"}
-                            placeholder="••••••••"
+                            placeholder="enter password "
                             className={`input input-bordered w-full pl-12 pr-12 bg-base-200/50 border-base-300 focus:border-[#fa0bd2] focus:ring-2 focus:ring-[#fa0bd2]/20 transition-all ${errors.password ? 'border-error' : ''}`}
                             {...register('password', { required: "Password is required" })}
                         />

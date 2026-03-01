@@ -5,7 +5,7 @@ import Loading from '../components/Loading/Loading';
 
 const AuthLayout = () => {
 
-    const {loading} = UseAuth();
+    // const {loading} = UseAuth();
     const matches = useMatches();
 
     useEffect(() => {
@@ -13,7 +13,7 @@ const AuthLayout = () => {
         document.title = currentRoute ? `${currentRoute.handle.title} | Civic Care` : "Civic Care";
     }, [matches]);
 
-    if(loading) return <Loading></Loading>
+    // if(loading) return <Loading></Loading>
 
     return (
        

@@ -25,7 +25,7 @@ const HomePage = () => {
             scale: 1,
             transition: {
                 duration: 1, 
-                delay: 0.4,    
+                delay: 0.3,    
                 ease: [0.22, 1, 0.36, 1], 
             }
         }

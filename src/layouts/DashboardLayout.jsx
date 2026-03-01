@@ -174,7 +174,7 @@ const DashboardLayout = () => {
                                     <li className="list-none"><NavLink to="/dashboard/profile" className={navItemStyle} onClick={closeDrawer}><FaUser size={18} /> Profile</NavLink></li>
                                     <li className="list-none"><NavLink to="/dashboard/settings" className={navItemStyle} onClick={closeDrawer}><FiSettings size={18} /> Settings</NavLink></li>
                                     <li className="list-none">
-                                        <button onClick={handleLogout} className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-error hover:bg-error/10 transition-all font-bold tracking-tight uppercase text-[11px]">
+                                        <button onClick={handleLogout} className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-error hover:bg-error/10 transition-all font-bold tracking-tight uppercase text-[12px] cursor-pointer">
                                             <FiLogOut size={18} /> Logout Session
                                         </button>
                                     </li>

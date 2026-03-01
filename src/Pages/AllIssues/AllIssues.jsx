@@ -81,7 +81,7 @@ const AllIssues = () => {
     if (loading) return <Loading />;
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8 md:py-12 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 py-8 mt-8 md:py-12 min-h-screen">
 
             {/* Header Section */}
             <motion.div
@@ -169,7 +169,7 @@ const AllIssues = () => {
                             <div className="absolute inset-0 bg-[#fa0bd2]/10 blur-3xl rounded-full"></div>
                             <HiOutlineDocumentSearch className="text-8xl text-base-content/10 relative" />
                         </div>
-                        <h3 className="text-2xl font-black uppercase tracking-tighter">No issues found</h3>
+                        <h3 className="text-2xl font-black uppercase tracking-tighter">No issues found! Refresh the page</h3>
                         <p className="text-base-content/40 font-medium max-w-xs">We couldn't find any reports matching your current filter criteria.</p>
                     </motion.div>
                 )}

@@ -1,7 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router';
 
 const Logo = () => {
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+
+        window.scrollTo(0, 0);
+    }, [pathname]);
+    
     return (
         <Link
             to="/"

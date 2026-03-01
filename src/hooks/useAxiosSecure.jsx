@@ -8,6 +8,7 @@ import { handleBlockedError } from '../utils/handleBlockedError';
 
 
 const axiosSecure = axios.create({
+    // baseURL: 'http://localhost:3000'
     baseURL: 'https://civic-care-server-tau.vercel.app'
     
 })
