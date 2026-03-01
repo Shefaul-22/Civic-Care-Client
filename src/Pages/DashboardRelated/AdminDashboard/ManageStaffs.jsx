@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { FaEdit, FaTrash, FaPhoneAlt, FaEnvelope, FaUserTag } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loading from "../../../components/Loading/Loading";
 import Swal from "sweetalert2";
@@ -20,21 +21,15 @@ const ManageStaffs = () => {
 
     useEffect(() => {
         if (editStaff) {
-            reset({
-                name: editStaff.displayName,
-                phone: editStaff.phone || ""
-            });
+            reset({ name: editStaff.displayName, phone: editStaff.phone || "" });
         }
     }, [editStaff, reset]);
 
     const handleUpdateSubmit = async (data) => {
-
         if (data.name === editStaff.displayName && data.phone === (editStaff.phone || "")) {
             setEditStaff(null);
-            return Swal.fire("No Changes", "You haven't changed anything!", "info");
+            return;
         }
-
-        Swal.fire({ title: 'Updating...', didOpen: () => Swal.showLoading() });
 
         try {
             const res = await axiosSecure.patch(`/admin/staffs/${editStaff._id}`, {
@@ -43,7 +38,7 @@ const ManageStaffs = () => {
             });
 
             if (res.data.success || res.data.modifiedCount > 0) {
-                Swal.fire("Success", "Staff updated!", "success");
+                Swal.fire({ title: "Updated", icon: "success", timer: 1500, showConfirmButton: false });
                 refetch();
                 setEditStaff(null);
                 reset();
@@ -55,16 +50,19 @@ const ManageStaffs = () => {
 
     const handleDelete = (staff) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: `Delete ${staff.displayName}?`,
+            title: 'TERMINATE ACCESS?',
+            text: `Permanently remove ${staff.displayName} from system?`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonColor: '#fa0bd2',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'YES, REMOVE',
+            background: "hsl(var(--b1))",
+            color: "currentColor"
         }).then(async (result) => {
             if (result.isConfirmed) {
                 await axiosSecure.delete(`/admin/staffs/${staff._id}`);
-                Swal.fire('Deleted!', 'Staff removed.', 'success');
+                Swal.fire('REMOVED', 'Staff record purged.', 'success');
                 refetch();
             }
         });
@@ -73,42 +71,44 @@ const ManageStaffs = () => {
     if (isLoading) return <Loading />;
 
     return (
-        <div className="p-4 md:p-8">
-            <h2 className="text-2xl font-bold mb-6">Manage <span className='text-[#fa0bd2]'>Staffs</span> ({staffs.length})</h2>
-
-            {/* --- Desktop Table View (Visible on md and up) --- */}
-            <div className="hidden md:block overflow-x-auto bg-base-100 shadow-xl rounded-2xl">
-                <table className="table w-full">
+        <div className="w-full">
+            {/* --- Desktop Table View (Visible on md and up, hidden on mobile) --- */}
+            <div className="hidden md:block overflow-x-auto">
+                <table className="table w-full border-collapse">
                     <thead>
-                        <tr className="bg-base-200">
-                            <th>Staff</th>
-                            <th>Contact Info</th>
-                            <th className="text-center">Actions</th>
+                        <tr className="bg-base-200/50 text-[10px] uppercase tracking-widest font-black">
+                            <th className="py-6 px-8">Staff Member</th>
+                            <th>Communication</th>
+                            <th className="text-right px-8">Operations</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="text-sm font-bold">
                         {staffs.map(staff => (
-                            <tr key={staff._id} className="hover">
-                                <td>
-                                    <div className="flex items-center gap-3">
+                            <tr key={staff._id} className="border-b border-base-200 hover:bg-base-200/30 transition-all group">
+                                <td className="py-6 px-8">
+                                    <div className="flex items-center gap-4">
                                         <div className="avatar">
-                                            <div className="mask mask-squircle w-12 h-12">
+                                            <div className="mask mask-squircle w-12 h-12 ring-2 ring-[#fa0bd2]/20 group-hover:ring-[#fa0bd2] transition-all">
                                                 <img src={staff.photoURL} alt="Avatar" />
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="font-bold">{staff.displayName}</div>
-                                            <div className="text-sm opacity-50 text-blue-500">{staff.role}</div>
+                                            <div className="uppercase tracking-tighter font-black group-hover:text-[#fa0bd2] transition-colors">{staff.displayName}</div>
+                                            <div className="text-[10px] opacity-40 uppercase flex items-center gap-1">
+                                                <FaUserTag className="text-[#fa0bd2]" /> {staff.role || 'Personnel'}
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span className="font-medium text-xs block">{staff.email}</span>
-                                    <span className="text-sm">{staff.phone || "No Phone"}</span>
+                                    <div className="flex flex-col gap-1">
+                                        <span className="flex items-center gap-2 text-xs opacity-70 italic"><FaEnvelope size={10} className="text-[#fa0bd2]" /> {staff.email}</span>
+                                        <span className="flex items-center gap-2 text-xs"><FaPhoneAlt size={10} className="text-[#fa0bd2]" /> {staff.phone || "---"}</span>
+                                    </div>
                                 </td>
-                                <td className="text-center space-x-2">
-                                    <button onClick={() => setEditStaff(staff)} className="btn btn-ghost btn-xs bg-blue-100 text-blue-600">Update</button>
-                                    <button onClick={() => handleDelete(staff)} className="btn btn-ghost btn-xs bg-red-100 text-red-600">Delete</button>
+                                <td className="text-right px-8 space-x-2">
+                                    <button onClick={() => setEditStaff(staff)} className="btn btn-sm rounded-xl border-base-300 hover:bg-[#fa0bd2] hover:text-white transition-all"><FaEdit />Edit</button>
+                                    <button onClick={() => handleDelete(staff)} className="btn btn-sm rounded-xl border-base-300 hover:bg-error hover:text-white transition-all"><FaTrash /></button>
                                 </td>
                             </tr>
                         ))}
@@ -116,63 +116,82 @@ const ManageStaffs = () => {
                 </table>
             </div>
 
-            {/* --- Mobile Card View (Visible on small screens) --- */}
-            <div className="grid grid-cols-1 gap-4 md:hidden">
+            {/* --- Mobile Card View (Visible only on mobile, hidden on md and up) --- */}
+            <div className="md:hidden grid grid-cols-1 gap-4 p-4">
                 {staffs.map(staff => (
-                    <div key={staff._id} className="card bg-base-100 shadow-md border border-base-200 p-4">
+                    <div key={staff._id} className="bg-base-100 rounded-[2rem] p-6 border border-base-200 shadow-sm space-y-4">
                         <div className="flex items-center gap-4">
-                            <img className="w-16 h-16 rounded-full object-cover border-2 border-primary" src={staff.photoURL} alt="" />
-                            <div className="flex-1">
-                                <h3 className="font-bold">{staff.displayName}</h3>
-                                <p className="text-xs opacity-60 break-all">{staff.email}</p>
-                                <p className="text-sm font-semibold mt-1">{staff.phone || "No Phone"}</p>
+                            <img className="w-16 h-16 rounded-2xl object-cover border-2 border-[#fa0bd2]" src={staff.photoURL} alt="" />
+                            <div>
+                                <h3 className="font-black uppercase tracking-tighter italic">{staff.displayName}</h3>
+                                <p className="text-[10px] opacity-50 uppercase font-black">{staff.role}</p>
                             </div>
                         </div>
-                        <div className="flex gap-2 mt-4">
-                            <button onClick={() => setEditStaff(staff)} className="  btn btn-primary flex-1">Update</button>
-                            <button onClick={() => handleDelete(staff)} className="  btn btn-error flex-1">Delete</button>
+                        <div className="py-3 border-y border-dashed border-base-200 text-xs space-y-1">
+                            <p className="opacity-60">{staff.email}</p>
+                            <p className="font-bold">{staff.phone || "No Phone"}</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={() => setEditStaff(staff)} className="btn btn-sm flex-1 bg-base-200 rounded-xl border-none font-black text-[10px] uppercase">Update</button>
+                            <button onClick={() => handleDelete(staff)} className="btn btn-sm flex-1 bg-error/10 text-error rounded-xl border-none font-black text-[10px] uppercase">Delete</button>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* --- Edit Modal --- */}
+            {/* Edit Modal (Remains same) */}
+            {/* Edit Modal */}
             {editStaff && (
-                <dialog open className="modal modal-bottom sm:modal-middle">
-                    <div className="modal-box">
-                        <h3 className="font-bold text-lg mb-4 text-center">Update Staff Info</h3>
+                <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+                    <div className="bg-base-100 w-full max-w-sm rounded-[2.5rem] border border-base-300 shadow-2xl p-8 animate-in zoom-in duration-200">
+                        <h3 className="text-xl font-black uppercase italic tracking-tighter mb-6 text-center">
+                            Modify <span className="text-[#fa0bd2]">Record</span>
+                        </h3>
                         <form onSubmit={handleSubmit(handleUpdateSubmit)} className="space-y-4">
-                            <div>
-                                <label className="label-text font-semibold">Display Name</label>
+
+                            {/* Name Field */}
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-2">Display Name</label>
                                 <input
                                     {...register("name", { required: "Name is required" })}
-                                    defaultValue={editStaff.displayName}
-                                    className="input input-bordered w-full"
+                                    className="input input-bordered w-full rounded-2xl bg-base-200 border-none font-bold"
                                 />
-                                {errors.name && <span className="text-error text-xs">{errors.name.message}</span>}
+                                {errors.name && <p className="text-error text-[10px] font-bold uppercase mt-1 ml-2">{errors.name.message}</p>}
                             </div>
-                            <div>
-                                <label className="label-text font-semibold">Phone Number</label>
+
+                            {/* Phone Field */}
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-2">Phone Line</label>
                                 <input
                                     {...register("phone", {
                                         required: "Phone is required",
-                                        minLength: { value: 11, message: "Exactly 11 digits required" },
-                                        maxLength: { value: 11, message: "Exactly 11 digits required" },
-                                        pattern: { value: /^[0-9]*$/, message: "Numbers only" }
+                                        minLength: { value: 11, message: "Must be 11 digits" },
+                                        maxLength: { value: 11, message: "Must be 11 digits" }
                                     })}
-                                    onInput={(e) => e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11)}
-                                    defaultValue={editStaff.phone || ""}
-                                    className="input input-bordered w-full"
+                                    className="input input-bordered w-full rounded-2xl bg-base-200 border-none font-bold"
                                 />
-                                {errors.phone && <span className="text-error text-xs">{errors.phone.message}</span>}
+                                {errors.phone && <p className="text-error text-[10px] font-bold uppercase mt-1 ml-2">{errors.phone.message}</p>}
                             </div>
-                            <div className="modal-action">
-                                <button type="submit" className="btn btn-primary">Save Changes</button>
-                                <button type="button" onClick={() => { setEditStaff(null); reset(); }} className="btn">Cancel</button>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-3 pt-4">
+                                <button
+                                    type="button"
+                                    onClick={() => { setEditStaff(null); reset(); }}
+                                    className="btn flex-1 rounded-2xl bg-base-200 border-none font-black uppercase text-[10px]"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="btn flex-[2] rounded-2xl bg-[#fa0bd2] hover:bg-[#d909b5] text-white border-none font-black uppercase text-[10px] shadow-lg shadow-[#fa0bd2]/20"
+                                >
+                                    Update Record
+                                </button>
                             </div>
                         </form>
                     </div>
-                </dialog>
+                </div>
             )}
         </div>
     );

@@ -4,7 +4,7 @@ import { IoAddCircleOutline, IoSearchOutline, IoMegaphoneOutline } from "react-i
 
 const CallToAction = () => {
     return (
-        <section className="py-20 relative overflow-hidden">
+        <section className="py-6 md:py-12 relative overflow-hidden">
             {/* Background Decorative Shapes */}
             <div className="absolute top-0 left-1/4 w-64 h-64 bg-[#fa0bd2]/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
             <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl -z-10 animate-bounce-slow"></div>

@@ -2,46 +2,29 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-
 import Swal from "sweetalert2";
 import ManageStaffs from "./ManageStaffs";
 import { useQueryClient } from "@tanstack/react-query";
-
+import { FaPlus, FaTimes, FaUserPlus } from "react-icons/fa";
 
 const AddStaff = () => {
     const [isOpen, setIsOpen] = useState(false);
     const axiosSecure = useAxiosSecure();
+    const queryClient = useQueryClient();
 
-    // const { data: staffs = [], isLoading, refetch } = useQuery({
-    //     queryKey: ['staffs'],
-    //     queryFn: async () => {
-    //         const res = await axiosSecure.get('/admin/staffs');
-    //         return res.data;
-    //     }
-    // });
-
-    // another way of refetch
-
-    const queryClient = useQueryClient()
-
-
+    // errors extracted from formState
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const handleAddStaff = async (data) => {
-
         try {
-
             Swal.fire({
-                title: "Please Wait",
-                text: "Staff account is being created...",
-                icon: "info",
-                showConfirmButton: false, 
-                allowOutsideClick: false  
+                title: "Processing...",
+                text: "Creating staff account and uploading image",
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading(),
             });
-            
+
             const profileImg = data.photo[0];
-
-
             const formData = new FormData();
             formData.append("image", profileImg);
 
@@ -57,131 +40,113 @@ const AddStaff = () => {
                 photoURL,
             };
 
-            // Send data to db
             const res = await axiosSecure.post("/admin/staffs", staffInfo);
 
-
-
             if (res.data.success) {
-
-                Swal.fire(
-                    "Success",
-                    "Staff added successfully",
-                    "success");
+                Swal.fire({
+                    icon: "success",
+                    title: "Force Joined!",
+                    text: "New staff member added to the system.",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
                 reset();
                 setIsOpen(false);
-
-                queryClient.invalidateQueries('staffs')
-
-            } else {
-                Swal.fire("Error", res.data.message, "error");
+                queryClient.invalidateQueries(['staffs']);
             }
-
         } catch (error) {
-
-            Swal.fire("Error", error.message, "error");
+            Swal.fire("Deployment Failed", error.message, "error");
         }
     };
 
     return (
-        <div className="p-6">
-            {/* Header */}
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl md:text-4xl  font-bold">Manage <span className='text-[#fa0bd2]'>Staffs</span></h2>
-                <button onClick={() => setIsOpen(true)} className="btn btn-primary">
-                    Add Staff
+        <div className="p-4 md:p-8 space-y-8 bg-transparent min-h-screen">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter italic uppercase">
+                        Personnel <span className='text-[#fa0bd2]'>Deployment</span>
+                    </h2>
+                    <p className="text-sm font-bold opacity-50 uppercase tracking-[0.3em] mt-1">
+                        Infrastructure & Team Management
+                    </p>
+                </div>
+                <button
+                    onClick={() => setIsOpen(true)}
+                    className="btn bg-[#fa0bd2] hover:bg-[#d909b5] text-white border-none rounded-2xl px-8 font-black uppercase italic tracking-widest shadow-lg shadow-[#fa0bd2]/20"
+                >
+                    <FaPlus className="mr-2" /> Add New Staff
                 </button>
             </div>
 
-            {/* Staff Table */}
-            <ManageStaffs></ManageStaffs>
+            {/* Content Section */}
+            <div className="bg-base-100 rounded-[2.5rem] border border-base-200 shadow-sm overflow-hidden">
+                <ManageStaffs />
+            </div>
 
-            {/* Modal */}
+            {/* Styled Modal */}
             {isOpen && (
-                <dialog open className="modal">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
+                    <div className="bg-base-100 w-full max-w-xl rounded-[2.5rem] border border-base-300 shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh]">
+                        <div className="bg-[#fa0bd2] p-8 text-white flex justify-between items-center">
+                            <div className="flex items-center gap-4">
+                                <div className="bg-white/20 p-3 rounded-xl backdrop-blur-md">
+                                    <FaUserPlus size={24} />
+                                </div>
+                                <h3 className="text-2xl font-black uppercase italic tracking-tighter">Registration</h3>
+                            </div>
+                            <button onClick={() => { reset(); setIsOpen(false); }} className="hover:rotate-90 transition-transform">
+                                <FaTimes size={20} />
+                            </button>
+                        </div>
 
-                    <div className="modal-box">
+                        <form onSubmit={handleSubmit(handleAddStaff)} className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Name Field */}
+                            <div className="space-y-1 md:col-span-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-2">Full Identity</label>
+                                <input {...register("name", { required: "Name is required" })} placeholder="Full Name" className="input input-bordered w-full rounded-2xl bg-base-200 border-none focus:ring-2 ring-[#fa0bd2] font-bold" />
+                                {errors.name && <p className="text-error text-[10px] font-bold uppercase mt-1 ml-2">{errors.name.message}</p>}
+                            </div>
 
-                        <h3 className="font-bold text-lg mb-4">Add New Staff</h3>
+                            {/* Email Field */}
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-2">Secure Email</label>
+                                <input {...register("email", { required: "Email is required" })} type="email" placeholder="email@system.com" className="input input-bordered w-full rounded-2xl bg-base-200 border-none focus:ring-2 ring-[#fa0bd2] font-bold" />
+                                {errors.email && <p className="text-error text-[10px] font-bold uppercase mt-1 ml-2">{errors.email.message}</p>}
+                            </div>
 
-                        <form onSubmit={handleSubmit(handleAddStaff)} className="space-y-3">
-
-                            <label className="font-semibold">Name</label>
-                            <input
-                                {...register("name", { required: "Name is required" })}
-                                placeholder="Name"
-                                className="input input-bordered w-full"
-                            />
-                            {
-                                errors.name &&
-                                <p className="text-red-500">{errors.name.message}</p>
-                            }
-
-                            <label className="font-semibold">Email</label>
-
-                            <input
-                                {...register("email", { required: "Email is required" })}
-                                type="email"
-                                placeholder="Email"
-                                defaultValue=""
-
-                                className="input input-bordered w-full"
-                            />
-
-                            {
-                                errors.email &&
-                                <p className="text-red-500">{errors.email.message}</p>
-                            }
-
-                            <label className="font-semibold">Password</label>
-
-                            <input
-                                {...register("password", {
+                            {/* Password Field */}
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-2">Access Key</label>
+                                <input {...register("password", {
                                     required: "Password is required",
-                                    minLength: { value: 6, message: "Min 6 characters" }
-                                })}
+                                    minLength: { value: 6, message: "Min 6 characters required" }
+                                })} type="password" placeholder="******" className="input input-bordered w-full rounded-2xl bg-base-200 border-none focus:ring-2 ring-[#fa0bd2] font-bold" />
+                                {errors.password && <p className="text-error text-[10px] font-bold uppercase mt-1 ml-2">{errors.password.message}</p>}
+                            </div>
 
-                                defaultValue=""
-                                type="password"
-                                placeholder="Password"
-                                className="input input-bordered w-full"
-                            />
-                            {
-                                errors.password && <p className="text-red-500">{errors.password.message}</p>
-                            }
+                            {/* Phone Field */}
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-2">Contact Line</label>
+                                <input type="number" {...register("phone", { required: "Phone number is required" })} placeholder="01XXX XXXXXX" className="input input-bordered w-full rounded-2xl bg-base-200 border-none focus:ring-2 ring-[#fa0bd2] font-bold" />
+                                {errors.phone && <p className="text-error text-[10px] font-bold uppercase mt-1 ml-2">{errors.phone.message}</p>}
+                            </div>
 
-                            <label className="font-semibold">Phone No</label>
+                            {/* Photo Field */}
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-40 ml-2">Avatar Profile</label>
+                                <input {...register("photo", { required: "Photo is required" })} type="file" className="file-input file-input-bordered w-full rounded-2xl bg-base-200 border-none font-bold" />
+                                {errors.photo && <p className="text-error text-[10px] font-bold uppercase mt-1 ml-2">{errors.photo.message}</p>}
+                            </div>
 
-                            <input type="number"
-                                {...register("phone")}
-                                placeholder="Phone"
-                                className="input input-bordered w-full"
-                            />
-
-
-                            <label className="font-semibold">Photo</label>
-
-                            <input
-                                {...register("photo", { required: "Photo is required" })}
-                                type="file"
-                                accept="image/*"
-                                className="file-input file-input-bordered w-full"
-                            />
-                            {errors.photo && <p className="text-red-500">{errors.photo.message}</p>}
-
-                            <div className="modal-action">
-                                <button type="submit" className="btn btn-primary">Add</button>
-                                <button
-                                    type="button"
-                                    onClick={() => { reset(); setIsOpen(false); }}
-                                    className="btn"
-                                >
-                                    Cancel
+                            <div className="md:col-span-2 pt-4">
+                                <button type="submit" className="btn w-full rounded-2xl bg-[#fa0bd2] hover:bg-[#d909b5] text-white border-none font-black uppercase italic tracking-[0.2em] h-14">
+                                    Initialize Staff Account
                                 </button>
                             </div>
                         </form>
                     </div>
-                </dialog>
+                </div>
             )}
         </div>
     );

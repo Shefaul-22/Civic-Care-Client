@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
 import UseAuth from "../../hooks/UseAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loading from "../../components/Loading/Loading";
@@ -54,9 +55,28 @@ const AllIssues = () => {
     const {
         issues = [],
         totalPages = 1,
-        currentPage = 1,
         total = 0
     } = data;
+
+    // Animation Variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1 
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
+        }
+    };
 
     if (loading) return <Loading />;
 
@@ -64,90 +84,121 @@ const AllIssues = () => {
         <div className="max-w-7xl mx-auto px-4 py-8 md:py-12 min-h-screen">
 
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8"
+            >
                 <div>
                     <div className="flex items-center gap-2 text-[#fa0bd2] font-bold text-sm uppercase tracking-widest mb-2">
                         <HiOutlineDocumentSearch size={20} />
                         <span>Public Directory</span>
                     </div>
-                    <h2 className="text-3xl md:text-5xl font-black text-base-content tracking-tight">
-                        All Issues <span className="text-[#fa0bd2]">Reported by Citizen</span>
+                    <h2 className="text-3xl md:text-5xl font-black text-base-content tracking-tight uppercase italic">
+                        All Issues <span className="text-[#fa0bd2]">Reported</span>
                     </h2>
                     <p className="text-base-content/60 mt-2 font-medium">
-                        Total <span className="text-primary font-bold">{total}</span> complaints submitted by citizens
+                        Total <span className="text-[#fa0bd2] font-black">{total}</span> complaints submitted by citizens
                     </p>
                 </div>
 
                 {/* Optional Status Indicator */}
-                {isFetching && (
-                    <div className="flex items-center gap-2 text-xs font-bold text-primary animate-pulse bg-primary/10 px-4 py-2 rounded-full">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                        </span>
-                        Updating List...
-                    </div>
-                )}
-            </div>
+                <AnimatePresence>
+                    {isFetching && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            className="flex items-center gap-2 text-xs font-bold text-[#fa0bd2] bg-[#fa0bd2]/10 px-4 py-2 rounded-full border border-[#fa0bd2]/20"
+                        >
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#fa0bd2] opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#fa0bd2]"></span>
+                            </span>
+                            Syncing Data...
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.div>
 
             {/* Filters Section */}
-            <div className="bg-base-200/50 p-4 rounded-[32px] border border-base-300 backdrop-blur-sm mb-10">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-base-200/40 p-5 rounded-[2.5rem] border border-base-content/5 backdrop-blur-md mb-10 shadow-inner"
+            >
                 <AllIssuesFilters
                     filters={filters}
                     setFilters={handleSetFilters}
                 />
-            </div>
+            </motion.div>
 
             {/* Content Grid */}
             <div className="relative min-h-[400px]">
-                {/* Loading Overlay for Fetching */}
-                {isFetching && (
-                    <div className="absolute inset-0 z-10 bg-base-100/40 backdrop-blur-[1px] flex justify-center pt-20">
-                        <div className="loading loading-dots loading-lg text-[#fa0bd2]"></div>
-                    </div>
-                )}
-
                 {issues.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        key={page + filters.search} 
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center"
+                    >
                         {issues.map(issue => (
-                            <div key={issue._id} className="w-full max-w-[400px] md:max-w-none">
+                            <motion.div
+                                key={issue._id}
+                                variants={itemVariants}
+                                className="w-full"
+                            >
                                 <IssueCard
                                     issue={issue}
                                     user={user}
                                     refetch={refetch}
                                     axiosSecure={axiosSecure}
                                 />
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 ) : (
-                    <div className="flex flex-col items-center justify-center py-20 text-center">
-                        <div className="text-6xl mb-4">🔍</div>
-                        <h3 className="text-2xl font-bold text-base-content/70">No issues found</h3>
-                        <p className="text-base-content/40">Try adjusting your filters or search terms</p>
-                    </div>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex flex-col items-center justify-center py-32 text-center"
+                    >
+                        <div className="relative mb-6">
+                            <div className="absolute inset-0 bg-[#fa0bd2]/10 blur-3xl rounded-full"></div>
+                            <HiOutlineDocumentSearch className="text-8xl text-base-content/10 relative" />
+                        </div>
+                        <h3 className="text-2xl font-black uppercase tracking-tighter">No issues found</h3>
+                        <p className="text-base-content/40 font-medium max-w-xs">We couldn't find any reports matching your current filter criteria.</p>
+                    </motion.div>
                 )}
             </div>
 
             {/* Pagination Section */}
             {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-16">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="flex justify-center items-center gap-3 mt-16"
+                >
                     <button
-                        className="btn btn-circle btn-outline border-base-300 hover:bg-[#fa0bd2] hover:border-[#fa0bd2]"
+                        className="btn btn-circle btn-ghost bg-base-200 hover:bg-[#fa0bd2] hover:text-white transition-all shadow-md"
                         disabled={page === 1}
                         onClick={() => setPage(page - 1)}
                     >
                         ❮
                     </button>
 
-                    <div className="join bg-base-200 p-1 rounded-full border border-base-300">
+                    <div className="flex items-center bg-base-200/50 p-1.5 rounded-full border border-base-content/5">
                         {[...Array(totalPages)].map((_, index) => (
                             <button
                                 key={index + 1}
                                 onClick={() => setPage(index + 1)}
-                                className={`join-item btn btn-sm border-none rounded-full px-5 ${page === index + 1
-                                        ? 'bg-[#fa0bd2] text-white shadow-lg'
-                                        : 'bg-transparent text-base-content hover:bg-base-300'
+                                className={`w-10 h-10 flex items-center justify-center text-sm font-black rounded-full transition-all ${page === index + 1
+                                        ? 'bg-[#fa0bd2] text-white shadow-lg scale-110'
+                                        : 'hover:bg-base-300 text-base-content/60'
                                     }`}
                             >
                                 {index + 1}
@@ -156,13 +207,13 @@ const AllIssues = () => {
                     </div>
 
                     <button
-                        className="btn btn-circle btn-outline border-base-300 hover:bg-[#fa0bd2] hover:border-[#fa0bd2]"
+                        className="btn btn-circle btn-ghost bg-base-200 hover:bg-[#fa0bd2] hover:text-white transition-all shadow-md"
                         disabled={page === totalPages}
                         onClick={() => setPage(page + 1)}
                     >
                         ❯
                     </button>
-                </div>
+                </motion.div>
             )}
         </div>
     );

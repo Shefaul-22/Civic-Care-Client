@@ -6,12 +6,18 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { BiSolidHomeCircle, BiStar } from 'react-icons/bi';
 import useRole from '../../hooks/useRole';
-import { MdContactPhone, MdOutlineLogin, MdReportProblem, MdSyncProblem, MdDashboard } from 'react-icons/md';
+import { MdContactPhone, MdOutlineLogin, MdReportProblem, MdSyncProblem, MdDashboard, MdOutlineWbSunny } from 'react-icons/md';
 import { FcServices } from 'react-icons/fc';
 import { HiInformationCircle } from 'react-icons/hi';
-import Logo from '../Shared/Logo'; // আমরা যে Logo কম্পোনেন্টটি বানিয়েছিলাম
+import Logo from '../Shared/Logo';
+import useTheme from '../../hooks/useTheme';
+import { IoMoon } from 'react-icons/io5';
+import { AiOutlineProfile } from 'react-icons/ai';
+import { FaUser } from 'react-icons/fa';
 
 const Navbar = () => {
+
+    const { theme, toggleTheme } = useTheme();
     const { user, logOutUser } = UseAuth();
     const { role } = useRole();
     const axiosSecure = useAxiosSecure();
@@ -40,7 +46,6 @@ const Navbar = () => {
             });
     };
 
-    // ইউনিক নাভলিঙ্ক স্টাইল
     const navItemStyles = ({ isActive }) =>
         `flex items-center gap-1.5 px-3 py-2 rounded-lg font-bold transition-all duration-300 ${isActive
             ? "text-[#fa0bd2] bg-[#fa0bd2]/10 shadow-[inset_0_0_10px_rgba(250,11,210,0.1)]"
@@ -57,6 +62,31 @@ const Navbar = () => {
             {(role === "user" || role === "premiumUser") && (
                 <li><NavLink to="/post-issue" className={navItemStyles}><MdReportProblem size={20} />Report Issue</NavLink></li>
             )}
+
+            {
+                user && (
+                    <li>
+                        <NavLink to="/dashboard" className="flex items-center gap-2 py-3 hover:bg-[#fa0bd2]/10 hover:text-[#fa0bd2] font-bold">
+                            <MdDashboard size={18} /> Dashboard
+                        </NavLink>
+                    </li>
+                )
+            }
+
+            {/* --- Theme Toggle Icon --- */}
+            <li className="flex items-center ml-2">
+                <button
+                    onClick={toggleTheme}
+                    className="p-2 rounded-full bg-base-200 hover:bg-[#fa0bd2]/10 transition-all duration-300 group"
+                    title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
+                >
+                    {theme === "light" ? (
+                        <IoMoon size={22} className="text-slate-700 group-hover:text-[#fa0bd2]" />
+                    ) : (
+                        <MdOutlineWbSunny size={22} className="text-yellow-400 animate-pulse" />
+                    )}
+                </button>
+            </li>
         </>
     );
 
@@ -76,7 +106,7 @@ const Navbar = () => {
                             {links}
                         </ul>
                     </div>
-                    {/* লোগো কম্পোনেন্ট ব্যবহার করা হয়েছে */}
+
                     <div className="scale-90 md:scale-100 origin-left">
                         <Logo />
                     </div>
@@ -116,8 +146,8 @@ const Navbar = () => {
                                     </div>
                                 </li>
                                 <li>
-                                    <Link to="/dashboard" className="flex items-center gap-2 py-3 hover:bg-[#fa0bd2]/10 hover:text-[#fa0bd2] font-bold">
-                                        <MdDashboard size={18} /> Dashboard
+                                    <Link to="/dashboard/profile" className="flex items-center gap-2 py-3 hover:bg-[#fa0bd2]/10 hover:text-[#fa0bd2] font-bold">
+                                        <FaUser size={18} /> Profile
                                     </Link>
                                 </li>
                                 <li className="mt-2 border-t border-base-300 pt-2">

@@ -134,7 +134,7 @@ const IssueDetails = () => {
             <img 
               src={issue.photoURL} 
               alt={issue.title} 
-              className="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-500" 
+              className="w-full h-96 object-cover transform group-hover:scale-105 transition-transform duration-500" 
             />
           </div>
 
