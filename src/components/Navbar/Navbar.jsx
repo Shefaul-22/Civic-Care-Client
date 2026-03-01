@@ -52,21 +52,28 @@ const Navbar = () => {
             : "text-base-content/70 hover:text-[#fa0bd2] hover:bg-base-200"
         }`;
 
+    const closeDropdown = () => {
+        const elem = document.activeElement;
+        if (elem) {
+            elem.blur();
+        }
+    };
+
     const links = (
         <>
-            <li><NavLink to="/" className={navItemStyles}><BiSolidHomeCircle size={20} />Home</NavLink></li>
-            <li><NavLink to="/allIssues" className={navItemStyles}><MdSyncProblem size={20} />All Issues</NavLink></li>
-            <li><NavLink to="/services" className={navItemStyles}><FcServices size={20} />Services</NavLink></li>
-            <li><NavLink to="/aboutUs" className={navItemStyles}><HiInformationCircle size={20} />About Us</NavLink></li>
-            <li><NavLink to="/service-centers" className={navItemStyles}><MdContactPhone size={20} />Contact</NavLink></li>
+            <li><NavLink onClick={closeDropdown} to="/" className={navItemStyles}><BiSolidHomeCircle size={20} />Home</NavLink></li>
+            <li><NavLink onClick={closeDropdown} to="/allIssues" className={navItemStyles}><MdSyncProblem size={20} />All Issues</NavLink></li>
+            <li><NavLink onClick={closeDropdown} to="/services" className={navItemStyles}><FcServices size={20} />Services</NavLink></li>
+            <li><NavLink onClick={closeDropdown} to="/aboutUs" className={navItemStyles}><HiInformationCircle size={20} />About Us</NavLink></li>
+            <li><NavLink onClick={closeDropdown} to="/service-centers" className={navItemStyles}><MdContactPhone size={20} />Contact</NavLink></li>
             {(role === "user" || role === "premiumUser") && (
-                <li><NavLink to="/post-issue" className={navItemStyles}><MdReportProblem size={20} />Report Issue</NavLink></li>
+                <li><NavLink onClick={closeDropdown} to="/post-issue" className={navItemStyles}><MdReportProblem size={20} />Report Issue</NavLink></li>
             )}
 
             {
                 user && (
                     <li>
-                        <NavLink to="/dashboard" className="flex items-center gap-2 py-3 hover:bg-[#fa0bd2]/10 hover:text-[#fa0bd2] font-bold">
+                        <NavLink onClick={closeDropdown} to="/dashboard" className="flex items-center gap-2 py-3 hover:bg-[#fa0bd2]/10 hover:text-[#fa0bd2] font-bold">
                             <MdDashboard size={18} /> Dashboard
                         </NavLink>
                     </li>
@@ -74,9 +81,15 @@ const Navbar = () => {
             }
 
             {/* --- Theme Toggle Icon --- */}
-            <li className="flex items-center ml-2">
+            <li className="flex items-center ml-2 ">
                 <button
-                    onClick={toggleTheme}
+
+                    onClick={() => {
+                        toggleTheme();     
+                        closeDropdown();  
+                    }}
+
+
                     className="p-2 rounded-full bg-base-200 hover:bg-[#fa0bd2]/10 transition-all duration-300 group"
                     title={theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
                 >

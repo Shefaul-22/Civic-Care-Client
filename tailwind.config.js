@@ -1,3 +1,5 @@
+import daisyui from 'daisyui'
+
 export default {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
@@ -36,5 +38,8 @@ export default {
             }
         },
     },
-    plugins: [],
+    plugins: [daisyui], 
+    daisyui: {
+        themes: ["dark", "light"], 
+    }
 }
