@@ -1,248 +1,68 @@
+# 🏗️ CivicCare - Public Infrastructure Issue Reporting System
 
----
+<p align="center">
+  <img src="YOUR_MOCKUP_IMAGE_URL_HERE" alt="CivicCare Mockup" width="100%">
+</p>
 
-# 🚧 Civic Care
+CivicCare is a community-driven, full-stack platform designed to bridge the gap between citizens and authorities. It allows users to report local infrastructure issues like potholes, broken streetlights, or waste management problems, ensuring faster resolution through a transparent tracking system.
 
-## Public Infrastructure Issue Reporting System
-
-🔗 **Live Site:** [https://public-care.web.app/](https://public-care.web.app/)
-
-💻 **Client Repo:** [https://github.com/Shefaul-22/Civic-Care-Client](https://github.com/Shefaul-22/Civic-Care-Client)
-
-⚙️ **Server Repo:** [https://github.com/Shefaul-22/Civic-Care-server](https://github.com/Shefaul-22/Civic-Care-server)
-
----
-
-## 📌 Overview
-
-**Civic Care** is a full-stack Public Infrastructure Issue Reporting System that enables citizens to report infrastructure problems such as potholes, broken streetlights, garbage overflow, water leaks, and more.
-
-The platform ensures efficient issue tracking, faster resolution, transparency, and seamless communication between citizens, staff, and administrators through a secure, scalable, and modern web application.
-
-This project demonstrates real-world full-stack development skills including authentication, role-based access control, payment integration, secure APIs, and responsive UI.
+**🔗 Live Demo:** [https://public-care.web.app/](https://public-care.web.app/)  
+**⚙️ Server Repo:** [Civic-Care-server](https://github.com/Shefaul-22/Civic-Care-server)
 
 ---
 
 ## ✨ Core Features
 
-### 👤 Citizen Features
+### 👤 Citizen Portal
+- **Report Issues:** Upload reports with images, descriptions, and location categories.
+- **Track Progress:** Real-time timeline updates (Pending → In Progress → Resolved).
+- **Boost Priority:** Secure payment integration to prioritize urgent community issues.
+- **Premium Subscription:** Access to unlimited reporting and advanced statistics.
 
-* Report infrastructure issues with image, location, and description
-* Track issue progress with real-time timeline updates
-* Edit and delete issues (if pending)
-* Upvote important issues
-* Boost issue priority using secure payment
-* Subscribe to premium for unlimited issue reporting
-* View personal dashboard with statistics and activity tracking
-
-### 🛠️ Staff Features
-
-* View assigned issues only
-* Update issue status (Pending → In Progress → Working → Resolved → Closed)
-* Add progress updates
-* Track issue timeline history
-* Manage profile information
-
-### 🛡️ Admin Features
-
-* Manage all issues across the system
-* Assign staff to issues
-* Reject or manage reported issues
-* Manage citizens and staff accounts
-* Block or unblock users
-* Monitor payments and subscriptions
-* View system analytics and statistics dashboard
+### 🛡️ Admin & Staff Dashboard
+- **Role-Based Access:** Distinct interfaces and permissions for Admin, Staff, and Citizens.
+- **Task Assignment:** Admins can assign specific issues to relevant staff members.
+- **System Analytics:** Visual data insights using **Recharts** to monitor infrastructure health.
+- **User Management:** Securely manage accounts, block/unblock users, and track payments.
 
 ---
 
-## 📊 Advanced Functionalities
+## 🛠️ Tech Stack
 
-* 🔐 JWT Authentication & Authorization
-* 👥 Role-based access control (Admin, Staff, Citizen)
-* 📍 Issue tracking timeline system
-* ⬆️ Upvote system with restrictions
-* 💳 Payment integration for:
+### 💻 Frontend
+<p align="left">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white" />
+  <img src="https://img.shields.io/badge/DaisyUI-5AD7E4?style=for-the-badge&logo=daisyui&logoColor=black" />
+  <img src="https://img.shields.io/badge/Recharts-22B5AD?style=for-the-badge&logo=recharts&logoColor=white" />
+</p>
 
-  * Issue priority boost
-  * Premium subscription
-* 📱 Fully responsive design (Mobile, Tablet, Desktop)
-* 🔎 Search and filter issues
-* 📄 Pagination support
-* 🌙 Dark/Light theme support
-* 🔔 Toast & alert notifications
-* 🔒 Secure environment variable protection
+### ⚙️ Backend & Database
+<p align="left">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Stripe_Payments-008CD1?style=for-the-badge&logo=stripe&logoColor=white" />
+</p>
 
----
-
-## 🧰 Tech Stack
-
-### Frontend
-
-* React.js
-* React Router DOM
-* Tailwind CSS
-* DaisyUI
-* TanStack Query
-* Axios
-* React Hook Form
-* Firebase Authentication
-* JWT
-
-### Backend
-
-* Node.js
-* Express.js
-* MongoDB
-* Firebase Admin SDK
-* JWT Authentication
-* Stripe Payment Integration
-
-### Deployment
-
-* Client: Firebase Hosting
-* Server: Vercel
-* Database: MongoDB Atlas
+### 🔐 Security & Deployment
+<p align="left">
+  <img src="https://img.shields.io/badge/Firebase_Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+</p>
 
 ---
 
-## 🖼️ System Architecture
+## 🏗️ System Architecture
 
-```
-Client (React)
-   ↓
-REST API (Express.js)
-   ↓
-MongoDB Database
-   ↓
-Authentication (Firebase + JWT)
-```
 
----
 
-## 🔐 Authentication & Security
+```text
+Client (React + TanStack Query) ↔ JWT Auth ↔ REST API (Node/Express) ↔ MongoDB
 
-* Firebase Authentication for user login & registration
-* JWT for secure API communication
-* Role-based protected routes
-* Environment variables for sensitive credentials
-* Secure payment handling
+🛡️ License
+Licensed under the MIT License.
 
----
-
-## 📂 Project Structure
-
-```
-client/
-│
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── dashboard/
-│   ├── routes/
-│   ├── hooks/
-│   ├── context/
-│   ├── api/
-│   └── layouts/
-│
-server/
-│
-├── routes/
-├── middleware/
-├── controllers/
-├── config/
-└── index.js
-```
-
----
-
-## ⚙️ Installation & Setup
-
-### Clone Client
-
-```
-git clone https://github.com/Shefaul-22/Civic-Care-Client.git
-cd Civic-Care-Client
-npm install
-npm run dev
-```
-
-### Clone Server
-
-```
-git clone https://github.com/Shefaul-22/Civic-Care-server.git
-cd Civic-Care-server
-npm install
-npm start
-```
-
----
-
-## 🌐 Environment Variables
-
-### Client (.env)
-
-```
-VITE_API_URL=
-VITE_FIREBASE_API_KEY=
-VITE_FIREBASE_AUTH_DOMAIN=
-VITE_FIREBASE_PROJECT_ID=
-```
-
-### Server (.env)
-
-```
-PORT=
-DB_USER=
-DB_PASS=
-JWT_SECRET=
-STRIPE_SECRET_KEY=
-```
-
----
-
-## 📈 Key Highlights
-
-* Full-stack production-ready web application
-* Real-world civic problem solving platform
-* Secure authentication and authorization
-* Payment and subscription system
-* Advanced dashboard system
-* Clean and scalable architecture
-* Modern responsive UI/UX
-
----
-
-## 🎯 Use Case
-
-This platform can be used by:
-
-* City Corporations
-* Municipal Authorities
-* Government Infrastructure Departments
-* Smart City Projects
-
----
-
-## 👨‍💻 Author
-
-**Md Shefaul Karim**
-
-* GitHub: [https://github.com/Shefaul-22](https://github.com/Shefaul-22)
-* Role: Full Stack Web Developer
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-## ⭐ Support
-
-If you like this project, please consider giving it a star ⭐ on GitHub.
-It helps increase visibility and motivates further development.
-
-```
-
----
+Developed by Mohammad Shefaul Karim
